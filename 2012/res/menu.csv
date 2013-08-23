@@ -1,0 +1,50 @@
+ID	parent	group	icon	enabled	action
+_FILE_	top	 			
+_NEW_FB_	_FILE_    		new		m.new
+__	_FILE_    				
+_CHECK_FB_	_FILE_    		open		m.check
+_OPEN_FB_	_FILE_    		open		m.open
+__	_FILE_    				
+_COMB_FB_	_FILE_    				m.comb
+_OPEN_COMB_FB_	_FILE_    				m.open.comb
+#__	_FILE_    				
+#_ADD_IMAGES_	_FILE_    				m.add.images
+#_ADD_IMAGES_METADATA_	_FILE_    				m.add.metada.images
+#_CHOOSE_IMAGES_	_FILE_    				m.choose.images
+#_CHANGE_TITLE_IMAGES_	_FILE_    				m.change.title.metadata.images
+__	_FILE_    				
+_SET_REPO_	_FILE_    				m.set.repo
+__	_FILE_    				
+_QUIT_	_FILE_    		quit		m.quit
+_EDIT_	top				
+_UPDATE_TEMPLATE_	_EDIT_    				m.update.template
+_ANALYSIS_	top				
+_ANOVA_	_ANALYSIS_				m.anova
+_MET_	_ANALYSIS_				m.met
+_PREFERENCES_	top				
+_PREF_GENERAL_	_PREFERENCES_				m.pref.general
+_PREF_FB_VARS_	_PREFERENCES_				m.pref.fb.vars
+__	_PREFERENCES_				
+_PREF_LOCS_	_PREFERENCES_				m.pref.locs
+#_PREF_ADD_LOCS_	_PREFERENCES_				m.pref.add.locs
+_TOOLS_	top				
+_TOOLS_RSSE_	_TOOLS_				m.tools.rsse
+_TOOLS_RSSL_	_TOOLS_				m.tools.rssl
+_TOOLS_RSSLY_	_TOOLS_				m.tools.rssly
+_TOOLS_RSSLY2_	_TOOLS_				m.tools.rssly2
+_WINDOW_	top				
+_WINDOW_SYNC_	_WINDOW_				m.win.sync
+_HELP_	top				
+_HELP_MANUAL_	_HELP_				m.help.man
+_HELP_PROTOCOL_	_HELP_				m.help.prot
+_HELP_SELECT_	_HELP_				m.help.select
+_HELP_ELSTON_	_HELP_				m.help.elston
+_HELP_RANKS_	_HELP_				m.help.ranks
+__	_HELP_				
+_HELP_MAN_OL_	_HELP_				m.help.manol
+_HELP_WEB_	_HELP_				m.help.web
+_HELP_FEEDBK_	_HELP_				m.help.feedbk
+#__	_HELP_				
+#_HELP_UPDATE_	_HELP_				m.help.update
+__	_HELP_				
+_HELP_ABOUT_	_HELP_				m.help.about

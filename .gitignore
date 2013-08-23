@@ -5,3 +5,10 @@
 *-Ex.R
 .Rproj.user
 GTDMS.Rproj
+/2012/bin/
+/2012/src/cipnumber.txt
+/2012/temp
+/2012/data
+man
+*.Rdata
+*.html
