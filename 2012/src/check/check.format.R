@@ -356,11 +356,18 @@ check.variable <- function(col, dict, tn, rows, styles, cidx) {
 	#rows
 }
 
+
+
+# check.variable <- function(col, dict, tn, rows, styles, cidx) {
+# }
+
+
+
 set.pb <- function(pb, ttl, msg,val){
 	if(!is.null(pb)) setWinProgressBar(pb, val, title = ttl, label = msg)
 }
 
-process.sheet <- function(asheet, nsi, dict, styles, varl, rp, fp, wb, mini, dfmt) {
+process.sheet <- function(asheet, nsi, dict, styles, varl, rp, fp, wb, mini, dfmt, pb) {
 	rows = getRows(asheet) #Causes problems with sheet field layout!
 	#asht = try(read.xlsx(fp,sheetName=nshets[i],stringsAsFactors=FALSE),TRUE)
   
@@ -380,6 +387,7 @@ process.sheet <- function(asheet, nsi, dict, styles, varl, rp, fp, wb, mini, dfm
 			vvrs = !test %in% xhdr # valid variables
 			for(t in 1:length(test)){
 				rule = paste("Validated the column label '",test[t],"'",sep="")
+				set.pb(pb,"Checking format",val=t, msg=paste("Checking sheet: Fieldbook", ":", test[t]))
 				x=check.log(nsi,rule,TRUE)
 				if(vvrs[t]){
 					tn = test[t]
@@ -494,8 +502,8 @@ if(is.Excel(fp)){
 	nshets = rshets[rshets %in% ashets]
 	nshets = sort(nshets)
 	
-	varl = try(get.sheet.data(sheets[["Var List"]]))
-	mini = try(get.sheet.data(sheets[["Minimal"]]))
+	varl = try(get.sheet.data(sheets[["Var List"]], "Var List"))
+	mini = try(get.sheet.data(sheets[["Minimal"]], "Minimal"))
 	#print(nshets)
 
 	# Remove for the time being the sheet Field_layout
@@ -508,15 +516,17 @@ if(is.Excel(fp)){
 		nsi  = nshets[i]
 		if(is.null(asheet)) break 
       #print(nshets[i])
-      print(nsi)
+      #print(nsi)
    	process.sheet(asheet = asheet, nsi = nsi, dict = dict, styles = styles, 
-				varl = varl, rp = rp, fp = fp, wb = wb, mini = mini, dfmt = dfmt)
+				varl = varl, rp = rp, fp = fp, wb = wb, mini = mini, dfmt = dfmt, pb= pb)
 	}
 
 	clp = get.check.log.path()
 	clf = read.csv(clp, sep="\t")
 	errs=clf[clf$Result=="ERROR",]
-	cld = rbind(errs, clf[clf$Result!="ERROR",])
+  if(nrow(errs)>0){
+	#cld = rbind(errs, clf[clf$Result!="ERROR",])
+  cld = errs # report only ERRORS
 	#print("point 1")
 	#add.sheet(fp = fp, mtrx = cld, sh="Format checks")
 	sh = "Format checks"
@@ -532,6 +542,7 @@ if(is.Excel(fp)){
 	#autoSizeColumn(sheet)
 	#TODO make reproducible report
 	#print("point 1")
+  }
 	rm(wb,data,pb, varl, mini)
 	#gc(verb=FALSE)
 	if(nrow(errs)>0) return(FALSE)

@@ -69,7 +69,7 @@ checkin.form <- function(dirname, w){
 	ii=1
 	pb <- winProgressBar(translate("_MSG_PREP)"), translate("_MSG_LOAD_MODULE_"),
 			xmin, xmax, xmin)
-	
+	dict = get.data.dict()
 	
 	for(i in 1:n){
 	   if(length(files)!=1){
@@ -85,10 +85,14 @@ checkin.form <- function(dirname, w){
 	   info <- sprintf(paste("%d%%",translate("_MSG_DONE_")), round(ii/xmax*100))
 	   setWinProgressBar(pb, ii, sprintf("Checking format (%s)", info), info)
 	   #ok = do.form.checks(fp, dirname)
+	  clearDerivedSheets(fp) 
 		file.copy(fp, to, ov=TRUE)
 		msg = ""
 		ok = TRUE
-		ok = try(check.format(fp, pb,ii))
+		ok = try({
+      #clearDerivedSheets(to)
+      check.format(fp, pb,ii)
+      })
 		if(str_detect(ok,"Error")) {
 			ok = FALSE
 		}
@@ -116,19 +120,19 @@ checkin.form <- function(dirname, w){
 			ii=ii+1
 			info <- sprintf("%d%% done", round(ii/xmax*100))
 			setWinProgressBar(pb, ii, sprintf("Calculating variables (%s)", info), info)
-			canVars = try(calc.vars(to,sheet="Fieldbook"))
+			canVars = try(calc.vars(wb,sheetName="Fieldbook", dict, to))
 			if(length(str_detect(canVars,"Error"))>0){
 				msg = paste(msg,"Calculation of derived variables in sheet 'Fieldbook' had errors. Please see manual.",sep='\n')
 			}
 			
 			
 			
-			if("Fieldbook2" %in% sheets){
-			canVars = try(calc.vars(to,sheet="Fieldbook2"))
-			if(length(str_detect(canVars,"Error"))>0){
-				msg = paste(msg,"Calculation of derived variables in sheet 'Fieldbook2' had errors. Please see manual.",sep='\n')
-			}
-			}
+# 			if("Fieldbook2" %in% sheets){
+# 			canVars = try(calc.vars(to,sheet="Fieldbook2"))
+# 			if(length(str_detect(canVars,"Error"))>0){
+# 				msg = paste(msg,"Calculation of derived variables in sheet 'Fieldbook2' had errors. Please see manual.",sep='\n')
+# 			}
+# 			}
 			
 			# Must be after calculating the variables because it reuses the results in this sheet
 			# and just paints them red when mssing values >= 10%
@@ -205,7 +209,7 @@ checkin.form <- function(dirname, w){
 			}
 			file.copy(to, out, ov=TRUE)
 			if(nchar(msg)>0) gmessage(msg,title="Data processing errors", icon="error")
-			refresh(w)
+			#refresh(w)
 			
 		} else{
 			gmessage("File has format errors!",title="Format check", icon="error")

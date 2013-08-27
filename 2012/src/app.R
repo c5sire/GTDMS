@@ -96,6 +96,7 @@
 	include(file.path("utils","vars.R"),20)
 	include(file.path("utils","excel.utils.R"),21)
 	include(file.path("utils","str.utils.R"),22)
+		include(file.path("utils","fbImpEx.R"),22)
 	include("metadata.R",23)
 	include(file.path("utils", "auto.add.crop.template.R"),24)
 	include(file.path("utils", "auto.add.countries.to.prefs.R"),24)

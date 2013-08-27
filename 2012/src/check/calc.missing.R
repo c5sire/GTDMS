@@ -35,8 +35,14 @@ calc.missing <-function(fp){
 		rows = getRows(sh,ri)
 		cell = getCells(rows)
 		lapply(cell,setCellStyle,csl$warn)
+
+		ri = as.integer(row.names(data[th<10,]))+1
+		rows = getRows(sh,ri)
+		cell = getCells(rows)
+		lapply(cell,setCellStyle,csl$form)
 		
-	}
+    
+	} 
 	
 	saveWorkbook(wb,fp)
 	

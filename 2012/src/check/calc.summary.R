@@ -306,7 +306,7 @@ calc.descriptive <-function(fp){
 		row = ridx[i]
 		cell <- createCell(rows[row], colIndex=col)[[1,1]]
 		#dfmt ="###0.0"
-		if(j %in% c(4,9,10)) cs = csd #dfmt="###0"
+		
 		if(!is.na(x[i,j]) & (as.character(x[i,j])!="Inf") & (as.character(x[i,j])!="-Inf")){
 			value<-x[i,j]
 			setCellValue(cell, value)
@@ -314,6 +314,7 @@ calc.descriptive <-function(fp){
 			setCellValue(cell, "")
 			cs = csl$number_col1 #dfmt =NULL
 		}
+		if(j %in% c(4,9,10)) cs = csd #dfmt="###0"
 #		cellStyle1 <- createCellStyle(wb, 
 #				fillForegroundColor=color, fillPattern="SOLID_FOREGROUND",dataFormat=dfmt)
 		setCellStyle(cell, cs)
