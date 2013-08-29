@@ -151,61 +151,14 @@ for(i in 2:ncol(resu)){
   if(kk==3) kk=0
   names(cs)[i] = i
 }
-sheet = createSheet(wb,"Summary by Clone")
+sheet = createSheet(wb,"Summary by clone")
 #sht = sh[["Summary by Clone"]]
 #resu = for(i in 2:ncol(resu)) resu[,i] = as.numeric(resu[,i])
 rs = as.matrix(resu[,c(2:ncol(resu))])
 resu[,2:ncol(resu)] =  rs
 addDataFrame(resu,sheet, colnamesStyle=fbs$CHdr, rownamesStyle = fbs$RHdr, colStyle = cs, row.names=F)
-	
-  
-# sheet = sheets[shn]
-# #clear.sheet(fp, shn)
-# if(exists.sheet(sheet)){
-# 	removeSheet(wb,shn)	
-# 	saveWorkbook(wb, fp)
-# 	sheets <- getSheets(wb)
-# } 
-# 	
-# 	sheet = createSheet(wb,shn)
-# 	
-# 	resu = as.data.frame(resu)
-# 	resu[,"INSTN"]=as.character(resu[,"INSTN"])
-# 	resu  = rbind(names(resu),resu)
-# 	resu[1,]=as.character(resu[1,])
-# 	resu[,1]=as.character(resu[,1])
-# 	
-# 	#resu[1,1]="INSTN"
-# 	n     = nrow(resu)
-# 	m 	  = ncol(resu)
-# 	rows = createRow(sheet,1:n)
-# 	sw = FALSE
-# 	csl = get.cell.styles(wb)
-# 	cs = csl$header
-# 	#color="WHITE"
-# 	for(j in 1:m){
-# 		if(j==1 ) cs = csl$header#color="LIGHT_GREEN"
-# 		if(j>1 & str_detect(resu[1,j],"_n")){
-# 			if(sw) {
-# 				cs = csl$number_col3 #color="LIGHT_YELLOW"
-# 			} else cs = csl$number_col2 #color="WHITE"
-# 			sw=!sw
-# 		}
-# 		ac = cs #ac=color
-# 		for(i in 1:n){
-# 			if(i==1 ) {
-# 				cs = csl$header #color="LIGHT_GREEN"
-# 			} else cs = ac #color=ac
-# 			cell <- createCell(rows[i], colIndex=j)[[1,1]]
-# 			value<- resu[i,j]
-# 			if(!is.null(value)) setCellValue(cell, value)
-# #			cellStyle1 <- createCellStyle(wb, 
-# #					fillForegroundColor=color, fillPattern="SOLID_FOREGROUND")
-# 			setCellStyle(cell, cs)
-# 		}
-# 	}
-	autoSizeColumn(sheet, 1:ncol(resu))
-	saveWorkbook(wb, fp)
+autoSizeColumn(sheet, 1:ncol(resu))
+saveWorkbook(wb, fp)
 }
 
 
