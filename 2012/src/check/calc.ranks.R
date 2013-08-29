@@ -10,6 +10,7 @@
 ###############################################################################
 
 calc.ranks <- function(fp){
+
 	sheetName="Ranks by clone"
 	#clear.sheet(sheetName,fp)
 	
@@ -165,6 +166,7 @@ calc.ranks <- function(fp){
     sheets <- getSheets(wb)
     # create the list of column styles
     fbs = getFbStyles(wb) 
+
     cs = list()
     cs[[1]] = fbs$RHdr
     names(cs)[1] = 1
