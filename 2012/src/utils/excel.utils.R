@@ -33,7 +33,7 @@ getFbStyles <- function(wb){
     stdbx
   Clc2 <- CellStyle(wb) + Font(wb, color="BLUE") + 
     Fill(foregroundColor="LIGHT_YELLOW", pattern="SOLID_FOREGROUND") +
-    DataFormat(nmbr1) +
+    DataFormat(nmbr2) +
     stdbx
   
   Itgr <- CellStyle(wb) + Font(wb, color="BLACK") + 
