@@ -11,7 +11,7 @@
 
 calc.ranks <- function(fp){
 	sheetName="Ranks by Clone"
-	clear.sheet(sheetName,fp)
+	#clear.sheet(sheetName,fp)
 	
 	vl = read.excel(fp, "Var List")
 	#vl = read.xlsx(fp,sheetName="Var List", h=T, stringsAsFactors=F)
@@ -158,7 +158,29 @@ calc.ranks <- function(fp){
 	names(v)[(nn+2):ncol(v)]=as.character(sapply(names(v)[(nn+2):ncol(v)], str_replace,"_Mean","_Rank"))
 	#write.xlsx2(v,file=fp,sheetName="Ranks by clone",append=T, row.names=F)
 	#print("write ranks")
-	try(write.xls(v,fp,sheet=sheetName))
+	#try(write.xls(v,fp,sheet=sheetName))
+    
+  try({
+    wb = loadWorkbook(fp)
+    sheets <- getSheets(wb)
+    # create the list of column styles
+    fbs = getFbStyles(wb) 
+#     cs = list()
+#     cs[[1]] = fbs$RHdr
+#     names(cs)[1] = 1
+    sheet = createSheet(wb,sheetName)
+    
+#     for(i in 2:ncol(v)) {
+#       cs[[i]] = fbs$Itgr
+#       names(cs)[i] = i
+#     }
+    
+    addDataFrame(v,sheet, colnamesStyle=fbs$CHdr, rownamesStyle = fbs$RHdr, colStyle = fbs$Itgr, row.names=F)
+    autoSizeColumn(sheet, 1:ncol(resu))
+    saveWorkbook(wb, fp)
+    
+  })  
+    
 	#print("Write ranks ok")
 	}
 	"ok"
