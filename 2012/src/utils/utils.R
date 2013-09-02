@@ -187,36 +187,36 @@ getResourceDataSel <- function(type, sheetName, column){
 	sts
 }
 
-getCountryList = function(){
-	sts=getResourcePath("sites")
-	db=getResourceSheet(sts,"Sites")
-	sort(unique(db$CNTRY))
-}
+# getCountryList = function(){
+# 	sts=getResourcePath("sites")
+# 	db=getResourceSheet(sts,"Sites")
+# 	sort(unique(db$CNTRY))
+# }
+# 
+# getSiteList = function(countries, full=TRUE){
+# 	sts=getResourcePath("sites")
+# 	db=getResourceSheet(sts,"Sites")
+# 	if(full) return(db[db$CNTRY%in%countries,"FULLN"])
+# 	return(db[db$CNTRY%in%countries,"SHORTN"])
+# }
 
-getSiteList = function(countries, full=TRUE){
-	sts=getResourcePath("sites")
-	db=getResourceSheet(sts,"Sites")
-	if(full) return(db[db$CNTRY%in%countries,"FULLN"])
-	return(db[db$CNTRY%in%countries,"SHORTN"])
-}
-
-readSites = function(fn){
-	sites=1
-#	gp = getPath()
-#	sns = strsplit(LoG,"/")[[1]]
-#	LoG = sns[2]
-#	
-	#fp = paste(gp,"/GermplasmList/",sns[1],"/",LoG,".xlsx" ,sep="")
-	#print(fp)
-	data = read.xlsx2(fn,sheetName="Parameters", h=F)
-	#print(data)
-	sites=as.character(data[data[,1]=="tsites",2])
-	#sts = toVector(sites)
-	
-	#length(sts)
-	#gsub(";","\n",sites)
-	sites
-}
+# readSites = function(fn){
+# 	sites=1
+# #	gp = getPath()
+# #	sns = strsplit(LoG,"/")[[1]]
+# #	LoG = sns[2]
+# #	
+# 	#fp = paste(gp,"/GermplasmList/",sns[1],"/",LoG,".xlsx" ,sep="")
+# 	#print(fp)
+# 	data = read.xlsx2(fn,sheetName="Parameters", h=F)
+# 	#print(data)
+# 	sites=as.character(data[data[,1]=="tsites",2])
+# 	#sts = toVector(sites)
+# 	
+# 	#length(sts)
+# 	#gsub(";","\n",sites)
+# 	sites
+# }
 
  readTemplates = function(prefs){
      #gp = getPath()

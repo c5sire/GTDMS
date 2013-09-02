@@ -9,6 +9,8 @@ library(RSQLite)
 
 dbname = "res/gtdms.db"
 
+
+
 fbCreateDataDictionary <- function(dbname=dbname){
 sqlDefDict = "CREATE TABLE datadictionary (
   ID INT PRIMARY KEY NOT NULL,
@@ -90,5 +92,60 @@ get.dict <- function(){
   
 }
 
+fbCreateTrialSites <- function(dbname=dbname){
+  sqlDefDict = "CREATE TABLE trialsites (
+  ID INT PRIMARY KEY NOT NULL,
+  SHORTN CHAR(25),
+  ALTERN CHAR(25),
+  FULLN CHAR(25),
+  LOCAL CHAR(25),
+  LATD REAL,
+  LOND REAL,
+  ELEV INT,
+  CROPS CHAR(200),
+  AEZ CHAR(25),
+  CONT CHAR(25),
+  CREG CHAR(5),
+  CNTRY CHAR(50),
+  ADM4 CHAR(50),
+  ADM3 CHAR(50),
+  ADM2 CHAR(50),
+  ADM1 CHAR(50)
+  );"
+  
+  con = dbConnect(SQLite(), dbname)
+  dbGetQuery(con, sqlDefDict)
+  dbDisconnect(con)
+}
+
+getCountryList = function(){
+  con = dbConnect(SQLite(),dbname)
+  sql = paste("SELECT CNTRY FROM trialsites", sep="")
+  res = NULL
+  try({
+    res = dbGetQuery(con, sql)
+    res = sort(unique(res$CNTRY))
+  })
+  dbDisconnect(con)
+  return(res)
+}
+
+getSiteList = function(countries, full=TRUE){
+  con = dbConnect(SQLite(),dbname)
+  sql = paste("SELECT CNTRY, SHORTN, FULLN FROM trialsites", sep="")
+  res = NULL
+  try({
+    res = dbGetQuery(con, sql)
+    res = res[res$CNTRY %in% countries, ]
+    if(full){
+      res = res$FULLN
+    } else {
+      res = res$SHORTN
+    }
+    res = sort(res)
+  })
+  dbDisconnect(con)
+  return(res)
+}
 
 

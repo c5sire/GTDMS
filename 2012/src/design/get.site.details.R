@@ -270,11 +270,14 @@ add.vars <- function(vss,wb, season, dict, prefs, fbt){
 }
 
 add.var.list <- function(dict,wb, prefs, vss, fbt){
-	sheet <- createSheet(wb,"Var List")
+	#sheet <- createSheet(wb,"Var List")
+  sheet = getSheets(wb)[["Var List"]]
 	#print(dict)
-	rows=createRow(sheet,(1:(nrow(dict)+2)))
+  nrows = nrow(dict)+2
+	rows=createRow(sheet,1:nrows)
 	n=ncol(dict)
-	dic=get.data.dict(dict[,2])
+	dic=get.data.dict()
+  dic = dic[dic$ABBR %in% dict[,2],]
 	#print(dic)
 	#has.form=has.formula(dic)
 	csl = get.cell.styles(wb)
@@ -313,7 +316,8 @@ add.var.list <- function(dict,wb, prefs, vss, fbt){
 
 	
 	
-	for(j in 1:nrow(dic)){
+	#for(j in 1:nrow(dic)){
+  for(j in 1:(nrows-2)){
 		r=j+1
 		#print(r)
 		#if(has.form[j]){

@@ -781,6 +781,7 @@ buildDesign = function(out){
 	#print(fr)
 	season = paste(out$years, out$season, sep="")
 	dict = as.data.frame(read.xlsx2(fr,"Var List"), stringsAsFactors=F)
+  #dict = get.data.dict()
 	
 #	variab = aa
 	prefs = get.prefs()
@@ -866,11 +867,11 @@ buildDesign = function(out){
 			#insert fieldbook
 			wb <- loadWorkbook(to)
 			#insert data dict
-			removeSheet(wb, sheetName="Var List")
-			saveWorkbook(wb, to)
+			#removeSheet(wb, sheetName="Var List")
+			#saveWorkbook(wb, to)
 			#write.xlsx2(dict,to,"Var List",append=T, row.names=F)
 			#write.xlsx2(data,to,"Fieldbook",append=T, row.names=F)
-			wb <- loadWorkbook(to)
+			#wb <- loadWorkbook(to)
 			#In 'Var List' only put selected variables
 			#insert site data
 			info=translate("_MSG_SET_SITE_")
@@ -895,14 +896,14 @@ buildDesign = function(out){
 			add.refs2sim.trials(siten, sitea, out,wb)
 			
 			#saveWorkbook(wb,to)
-			info=translate("_MSG_ADD_VARS_CAL_")
+			info=translate("_MSG_ADD_VARS_")
 			setWinProgressBar(pb, i, sprintf(paste(translate("_MSG_CREATE_FB_")," (%s)",sep=""), "d"), info)
 			add.vars(vss,wb, season, dict, prefs, out$logPrefix)
-			#saveWorkbook(wb,to)
+			saveWorkbook(wb,to)
 			info=translate("_MSG_ADD_VARS_CAL_")
 			setWinProgressBar(pb, i, sprintf(paste(translate("_MSG_CREATE_FB_")," (%s)",sep=""), "e"), info)
 			add.var.list(dict,wb, prefs, vss, out$logPrefix )
-			#saveWorkbook(wb,to)
+			saveWorkbook(wb,to)
 			info=translate("_MSG_ADD_FB_")
 			
 			
@@ -916,7 +917,7 @@ buildDesign = function(out){
 			#TODO add layout sheet
 			#wb <- loadWorkbook(to)
 			#print(out$sdesign)
-			add.layout(data, design = out$sdesign, nblock=out$bsize, layout=out$playout, wb, to)
+			#add.layout(data, design = out$sdesign, nblock=out$bsize, layout=out$playout, wb, to)
 
 			#saveWorkbook(wb,to)
 			#wb <- loadWorkbook(to)
