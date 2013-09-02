@@ -9,7 +9,7 @@ library(RSQLite)
 
 dbname = "res/gtdms.db"
 
-fbCreateDictionary <- function(dbname=dbname){
+fbCreateDataDictionary <- function(dbname=dbname){
 sqlDefDict = "CREATE TABLE datadictionary (
   ID INT PRIMARY KEY NOT NULL,
   AGROUP CHAR(50),
@@ -57,6 +57,38 @@ get.data.dict = function(terms="all",sheetName="any"){
   dbDisconnect(con)
   return(res)
 } 
+
+
+fbCreateDictionary <- function(dbname=dbname){
+  sqlDefDict = "CREATE TABLE dictionary (
+  id_label CHAR(50) PRIMARY KEY NOT NULL,
+  en_US CHAR(50),
+  es CHAR(50),
+  es_PE CHAR(50),
+  de CHAR(50),
+  fr CHAR(50),
+  pt CHAR(50),
+  sw CHAR(50),
+  id CHAR(50)
+  );"
+  
+  con = dbConnect(SQLite(), dbname)
+  dbGetQuery(con, sqlDefDict)
+  dbDisconnect(con)
+}
+
+get.dict <- function(){
+  #read.csv(file.path("res","dictionary.csv"),header=T,sep="\t", stringsAs=F)
+  con = dbConnect(SQLite(),dbname)
+  sql = paste("SELECT * FROM dictionary", sep="")
+  res = NULL
+  try({
+    res = dbGetQuery(con, sql)
+  })
+  dbDisconnect(con)
+  return(res)
+  
+}
 
 
 

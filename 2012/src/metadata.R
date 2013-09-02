@@ -9,9 +9,9 @@
 #
 ###############################################################################
 
-get.dict <- function(){
-	read.csv(file.path("res","dictionary.csv"),header=T,sep="\t", stringsAs=F)
-}
+# get.dict <- function(){
+# 	read.csv(file.path("res","dictionary.csv"),header=T,sep="\t", stringsAs=F)
+# }
 
 get.meta.label <- function(select, lang="en_US"){
 	meta = get.dict()

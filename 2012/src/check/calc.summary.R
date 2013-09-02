@@ -193,7 +193,7 @@ calc.summary.charts <- function(fp){
 			
 			#desc = dict[dict$ABBR==nmd,"DESC"]
 			
-			dotchart(as.numeric(xx), main="Dotchart for",sub=fulln, xlab="Frequency [absolute]", ylab=units, cex=cex)
+			dotchart(as.numeric(xx), labels = names(xx), main="Dotchart for",sub=fulln, xlab="Frequency [absolute]", ylab=units, cex=cex)
 		}
 		
 		devAskNewPage(ask=FALSE)
