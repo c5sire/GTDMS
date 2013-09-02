@@ -610,27 +610,28 @@ saveSheet = function(fc,fn,sheet){
 }
 
 has.formula <- function(dict) {
-	has.formula = nchar(dict$FORMULA)>1
+	#has.formula = nchar(dict$FORMULA)>1
+  return(!is.na(dict$AFORMULA))
 }
 
 
 
-get.data.dict = function(terms="all",sheetName="any"){
-	#fp = file.path(getwd(),"res","data_dictionary_yield.xls")
-	dic=getResourceData("dictionary","Variables")
-	nco=26
-	if(length(terms)==1){
-		if(terms=="all"){
-			return(dic[,1:nco])
-		}else{
-			return(dic[dic$ABBR %in% terms,1:nco])
-		}
-		
-	}else {
-		return(dic[dic$ABBR %in% terms,1:nco])	
-	}
-	
-} 
+# get.data.dict = function(terms="all",sheetName="any"){
+# 	#fp = file.path(getwd(),"res","data_dictionary_yield.xls")
+# 	dic=getResourceData("dictionary","Variables")
+# 	nco=26
+# 	if(length(terms)==1){
+# 		if(terms=="all"){
+# 			return(dic[,1:nco])
+# 		}else{
+# 			return(dic[dic$ABBR %in% terms,1:nco])
+# 		}
+# 		
+# 	}else {
+# 		return(dic[dic$ABBR %in% terms,1:nco])	
+# 	}
+# 	
+# } 
 
 get.templates <- function(){
 	crop = getCurrentCrop()

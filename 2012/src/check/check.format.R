@@ -291,8 +291,8 @@ check.site <- function(mini){
 }
 
 get.codes <- function(dict, tn){
-	codes = dict[dict$ABBR==tn,"DESC"]
-	if(codes!=""){
+	codes = dict[dict$ABBR==tn,"STATES"]
+	if(!is.na(codes)){
 		codes = str_trim(str_split(codes,";")[[1]])
 		cds = NULL
 		for(i in 1:length(codes)){
@@ -325,7 +325,7 @@ mark.error <-function(j, cidx, rule, rows, styles){
 	set.cell(rule, j, cidx, rows, cs  )
 }
 
-check.variable <- function(col, dict, tn, rows, styles, cidx) {
+check.variable <- function(col, dict, tn, rows=NULL, styles=NULL, cidx=NULL) {
 	if(has.data(col)){
 		if(is.numeric(col)){
 			lwr = as.numeric(dict[dict$ABBR==tn,"LOWER"])
@@ -339,14 +339,14 @@ check.variable <- function(col, dict, tn, rows, styles, cidx) {
 					rule = paste("Validated in column '",tn,"' that in row '",(j+1),"' the value '",col[j],
 							"' is between '",lwr,"' and '",upr,"'",sep="")
 					x=check.log("Fieldbook",rule,res)
-					if(!res) mark.error(j, cidx, rule, rows, styles)
+					#if(!res) mark.error(j, cidx, rule, rows, styles)
 					#print(cds)
 					if(!is.na(cds)){
 						res = col[j] %in% cds
 						rule = paste("Validated in column '",tn,"' that in row '",(j+1),"' the value '",col[j],
 							"' is one of '",paste(cds,collapse=", "),"'",sep="")
 						x=check.log("Fieldbook",rule,res)
-						if(!res) mark.error(j, cidx, rule, rows, styles)
+						#if(!res) mark.error(j, cidx, rule, rows, styles)
 					}
 				}
 			}

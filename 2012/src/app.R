@@ -116,6 +116,7 @@
 	include(file.path("design","createDesignExpDlg.R"),34)
 	include(file.path("utils","local.repo.utils.R"),35)
 	include(file.path("utils","fieldbook.status.utils.R"),36)
+	include(file.path("utils","fbImpEx.R"),36)
 	include(file.path("design","design.fieldbook.R"),37)
 	include(file.path("check","calc.backup.R"),38)
 	include(file.path("check","calculate.R"),39)

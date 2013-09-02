@@ -68,7 +68,8 @@ getFbStylesByCol <- function(data, data.dict, fbs){
     tp = dict[dict$ABBR==vars[i],"TYPE"]
     ut = dict[dict$ABBR==vars[i],"UNIT"]
     dg = round(as.numeric(dict[dict$ABBR==vars[i],"DIGITS"]),0)
-    hf = str_length(dict[dict$ABBR==vars[i],"AFORMULA"])>1
+    #hf = !is.na(dict[dict$ABBR==vars[i],"AFORMULA"])
+    hf = has.formula(dict[dict$ABBR==vars[i],])
     
     cs = fbs$Date
     #print(vars[i])
