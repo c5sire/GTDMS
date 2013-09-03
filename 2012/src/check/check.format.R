@@ -334,7 +334,7 @@ test.num.var.rule <- function(col, tn, lwr, upr, rows, cidx, styles){
     idx = which(test.range)
     res = col[test.range] 
     
-    rule = paste("Validated in column '",tn,"' that in row ",idx+1," the value '",res,
+    rule = paste("In column '",tn,"' (row ",idx+1,") the value '",res,
                  "' is NOT between '",lwr,"' and '",upr,"'",sep="")
     if(!is.null(rule)){
       check.log("Fieldbook",rule,NULL)
@@ -355,8 +355,24 @@ test.fac.var.rule <- function(col, tn, cds){
     idx = which(test.range)
     res = col[test.range] 
     vls = paste(cds,collapse=", ")
-    rule = paste("Validated in column '",tn,"' that in row ",idx+1," the value '",res,
+    rule = paste("In column '",tn,"' (row ",idx+1,") the value '",res,
                  "' is NOT one of '",vls,"'",sep="")
+    if(!is.null(rule)){
+      check.log("Fieldbook",rule,NULL)
+    }
+  }
+  rule
+}
+
+test.date.var.rule <- function(col, tn){
+  col = col[!is.na(col)]
+  test.range = !sapply(col,is.strdate)
+  rule=NULL
+  if(any(test.range==TRUE)){
+    idx = which(test.range)
+    res = col[test.range] 
+    rule = paste("In column '",tn,"' (row ",idx+1,") the value '",res,
+                 "' is NOT a valid date",sep="")
     if(!is.null(rule)){
       check.log("Fieldbook",rule,NULL)
     }
@@ -380,6 +396,12 @@ check.variable <- function(col, dict, tn, rows=NULL, styles=NULL, cidx=NULL) {
 			}
       
 		}
+    if(is.character(col)){
+      typ = dict[dict$ABBR==tn,"TYPE"]
+      if(typ=="Date"){
+        test.date.var.rule(col, tn)
+      }
+    }
     # TODO: handle here variables of text: factors and date
 	}
 }
