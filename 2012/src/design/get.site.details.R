@@ -216,7 +216,7 @@ add.params <-function(siten, sitea, out, wb){
 
 get.vf <- function(fbt, type, prefs) {
   v   = paste(fbt,type, sep="")
-  fil.vars = prefs[prefs$name==v,"past"]
+  fil.vars = prefs[prefs$pr_name==v,"pr_past"]
   fil.vars = str_split(fil.vars,";")[[1]]
   fil.vars
 }

@@ -25,23 +25,23 @@ log.list=list(type = "ggroup",
 						label.font = c(weight="bold"),
 						children = list(
 								list(name = "logPrefix",
-										label = prefs[prefs$name=="logPrefix","label_en"],
+										label = prefs[prefs$pr_name=="logPrefix","pr_label_en"],
 										type = "glabel",
-										text = prefs[prefs$name=="logPrefix","past"]
+										text = prefs[prefs$pr_name=="logPrefix","pr_past"]
 								),
 								list(name = "trialPhase",
-										label = prefs[prefs$name=="trialPhase","label_en"],
+										label = prefs[prefs$pr_name=="trialPhase","lpr_abel_en"],
 										type = "gcombobox",
-										items=toVector(prefs[prefs$name=="trialPhase","values"]),
-										selected=which(toVector(prefs[prefs$name=="trialPhase","values"])==
-														prefs[prefs$name=="trialPhase","past"])
+										items=toVector(prefs[prefs$pr_name=="trialPhase","pr_values"]),
+										selected=which(toVector(prefs[prefs$pr_name=="trialPhase","pr_values"])==
+														prefs[prefs$pr_name=="trialPhase","pr_past"])
 								),
 								list(name = "years",
-										label = prefs[prefs$name=="years","label_en"],
+										label = prefs[prefs$pr_name=="years","pr_label_en"],
 										type = "gcombobox",
-										items = toVector(prefs[prefs$name=="years","values"]),
-										selected=which(toVector(prefs[prefs$name=="years","values"])==
-														as.integer(prefs[prefs$name=="years","past"]))
+										items = toVector(prefs[prefs$pr_name=="years","pr_values"]),
+										selected=which(toVector(prefs[prefs$pr_name=="years","pr_values"])==
+														as.integer(prefs[prefs$pr_name=="years","pr_past"]))
 										,
 										handler=check.quality
 								),
@@ -49,11 +49,11 @@ log.list=list(type = "ggroup",
 #,
 #								
 								list(name = "season",
-										label = prefs[prefs$name=="season","label_en"],
+										label = prefs[prefs$pr_name=="season","lpr_abel_en"],
 										type = "gcombobox",
-										items=toVector(prefs[prefs$name=="season","values"]),
-										selected=which(toVector(prefs[prefs$name=="season","values"])==
-														prefs[prefs$name=="season","past"])
+										items=toVector(prefs[prefs$pr_name=="season","pr_values"]),
+										selected=which(toVector(prefs[prefs$pr_name=="season","pr_values"])==
+														prefs[prefs$pr_name=="season","pr_past"])
 										## depends.on = "x",
 										## depends.FUN = function(value) nchar(value) > 0,
 										## depends.signal = "addHandlerBlur"
@@ -78,18 +78,18 @@ log.list=list(type = "ggroup",
 						label.font = c(weight="bold"),
 						children = list(
 								list(name = "nGenotypes",
-										label = prefs[prefs$name=="nGenotypes","label_en"],
+										label = prefs[prefs$pr_name=="nGenotypes","pr_label_en"],
 										type = "gcombobox",
-										items=toVector(prefs[prefs$name=="nGenotypes","values"]),
-										selected=which(toVector(prefs[prefs$name=="nGenotypes","values"])==
-														as.integer(prefs[prefs$name=="nGenotypes","past"]))
+										items=toVector(prefs[prefs$pr_name=="nGenotypes","pr_values"]),
+										selected=which(toVector(prefs[prefs$pr_name=="nGenotypes","pr_values"])==
+														as.integer(prefs[prefs$pr_name=="nGenotypes","pr_past"]))
 								),
 								list(name = "nSeeds",
-										label = prefs[prefs$name=="nSeeds","label_en"],
+										label = prefs[prefs$pr_name=="nSeeds","pr_label_en"],
 										type = "gcombobox",
-										items=toVector(prefs[prefs$name=="nSeeds","values"]),
-										selected=which(toVector(prefs[prefs$name=="nSeeds","values"])==
-														as.integer(prefs[prefs$name=="nSeeds","past"]))
+										items=toVector(prefs[prefs$pr_name=="nSeeds","pr_values"]),
+										selected=which(toVector(prefs[prefs$pr_name=="nSeeds","pr_values"])==
+														as.integer(prefs[prefs$pr_name=="nSeeds","pr_past"]))
 								)
 					)
 			)

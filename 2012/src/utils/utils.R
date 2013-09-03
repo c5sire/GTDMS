@@ -224,7 +224,7 @@ getResourceDataSel <- function(type, sheetName, column){
      #lf = list.files(gp,pattern="template_*.xls")
      #lf
      #prefs = get.prefs()
-     nTpl = prefs[prefs$name=="template","past"]
+     nTpl = prefs[prefs$pr_name=="template","pr_past"]
      nTpl = gsub(".xls","",nTpl)
      nTpl
  }
@@ -398,7 +398,7 @@ countNAgeno = function(x) ncol(data)-sum(with(data, table(x)))
 
 hasCommentCol = function(data){
 	nms=names(data)
-	"Comments"%in%nms
+	"Comments"%in% nms
 }
 
 filterVars = function(trials, crop, pct = 0.1){
@@ -413,7 +413,7 @@ filterVars = function(trials, crop, pct = 0.1){
 		for(i in 1:ncol(data)) {
 			if(is.logical(data[,i])) data[,i]=as.integer(data[,i])
 		}
-		if(hasCommentCol(data)) data = data[,!names(data)%in%"Comments"]
+		if(hasCommentCol(data)) data = data[,!names(data) %in% "Comments"]
 		#str(data)
 		#excl = (apply(data,2,countNAvars)<=thrsh)
 		#print(excl)
@@ -648,7 +648,7 @@ get.templates <- function(){
 
 get.var.fil <- function(fbt, prefs, vss, type) {
 	v   = paste(fbt,type, sep="")
-	its = prefs[prefs$name==v,"past"]
+	its = prefs[prefs$pr_name==v,"pr_past"]
 	its = strsplit(its,";")[[1]]
 	its = vss %in% its
 	its
@@ -656,7 +656,7 @@ get.var.fil <- function(fbt, prefs, vss, type) {
 
 get.site.fil <- function(cnt, prefs, ssn, type) {
 	v   = cnt
-	its = prefs[prefs$name==v,"past"]
+	its = prefs[prefs$pr_name==v,"pr_past"]
 	if(length(its)!=0){
 		its = strsplit(its,";")[[1]]
 		its = ssn %in% its

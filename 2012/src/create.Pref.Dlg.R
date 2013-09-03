@@ -17,22 +17,23 @@ check.countries <- function(prefs, cntrs){
 	
 	# get list of countries from database: parameter cntrs!
 	# get list of countries from preference file: parameter prefs!
-	p.cntrs = prefs[prefs$name=="acountries","past"]
+	p.cntrs = prefs[prefs$pr_name=="acountries","pr_past"]
 	# compare both lists
 	p.cntrs=str_split(p.cntrs,";")[[1]]
 	res=cntrs[!cntrs %in% p.cntrs]
 	if(length(res)!=0){
 		# and add missing countries to preference file
-		prefs[prefs$name=="acountries","past"] =  paste(c(p.cntrs,res),collapse=";")
-		prefs[prefs$name=="acountries","values"] =  paste(c(p.cntrs,res),collapse=";")
-		prefs[prefs$name=="acountries","default"] =  paste(c(p.cntrs,res),collapse=";")
+		prefs[prefs$pr_name=="acountries","pr_past"] =  paste(c(p.cntrs,res),collapse=";")
+		prefs[prefs$pr_name=="acountries","pr_values"] =  paste(c(p.cntrs,res),collapse=";")
+		prefs[prefs$pr_name=="acountries","pr_default"] =  paste(c(p.cntrs,res),collapse=";")
 		for(j in 1:length(res)){
 			row = c(res[j],res[j],"","","")
 			prefs = rbind(prefs,row)
 		}
 		#save prefs
-		fn = file.path("res","prefs.txt")
-		write.table(prefs,file = fn, sep="\t", row.names=F)
+		#fn = file.path("res","prefs.txt")
+		#write.table(prefs,file = fn, sep="\t", row.names=F)
+    write.prefs(prefs)
 	}
 	prefs
 }
@@ -165,11 +166,11 @@ getPrefLayout = function(prefs){
 #	ptyl.vars = get.tpl.txt("PTYL")
 #	ptlb.vars = get.tpl.txt("PTLB")
 	
-	c.def  = prefs[prefs$name=="crop"   ,"past"]
+	c.def  = prefs[prefs$pr_name=="crop"   ,"pr_past"]
 	#s.def  = strsplit(prefs[prefs$name=="filDesign","past"],";")[[1]]
-	s.fbk  = prefs[prefs$name=="afieldbook","past"]
+	s.fbk  = prefs[prefs$pr_name=="afieldbook","pr_past"]
 #	s.tpl  = prefs[prefs$name=="template","past"]
-	s.cnt  = prefs[prefs$name=="acountries","past"]
+	s.cnt  = prefs[prefs$pr_name=="acountries","pr_past"]
 	fsel=0
 	if(s.fbk!=""){
 		fsel=which(fbook%in%s.fbk==TRUE)
@@ -330,10 +331,10 @@ create.Pref.Dlg = function(w){
 				#out <- rejoin.tpl.vars(out)
 				#print(out)
 				#putPrefs(prefs,out)
-				prefs[prefs$name=="crop","past"]=out$crop
+				prefs[prefs$pr_name=="crop","pr_past"]=out$crop
 				#prefs[prefs$name=="filDesign","past"]=paste(out$filDesign,collapse=";")
 				if(is.na(out$afieldbook)) out$afieldbook=""
-				prefs[prefs$name=="afieldbook","past"]=out$afieldbook
+				prefs[prefs$pr_name=="afieldbook","pr_past"]=out$afieldbook
 				write.prefs(prefs)
 				#w=refresh(w) #GTDM-310
 				refresh(w)
@@ -457,15 +458,15 @@ create.Var.Pref.Dlg = function(win){
 				for(i in 1:length(tplts)){
 					nm = paste(tplts[i],"vars",sep="")
 					x = paste(res[[i]][[nm]],collapse=";")
-					prefs[prefs$name==nm,"past"]=x
+					prefs[prefs$pr_name==nm,"pr_past"]=x
 					
 					nm = paste(tplts[i],"anal",sep="")
 					x = paste(res[[i]][[nm]],collapse=";")
-					prefs[prefs$name==nm,"past"]=x
+					prefs[prefs$pr_name==nm,"pr_past"]=x
 					
 					nm = paste(tplts[i],"desc",sep="")
 					x = paste(res[[i]][[nm]],collapse=";")
-					prefs[prefs$name==nm,"past"]=x
+					prefs[prefs$pr_name==nm,"pr_past"]=x
 					
 				}
 				write.prefs(prefs)
@@ -502,7 +503,7 @@ getLocPrefLayout = function(prefs){
 #	ptlb.vars = get.tpl.txt("PTLB")
 	s.tpl = list(length(cntrs))
 	for(i in 1:nc) {
-		s.tpl[[i]]  = prefs[prefs$name==cntrs[i],"past"]
+		s.tpl[[i]]  = prefs[prefs$pr_name==cntrs[i],"pr_past"]
 	
 		print(s.tpl)
 		tpls=list(length(cntrs))
@@ -577,7 +578,7 @@ create.Loc.Pref.Dlg = function(win){
 					gmessage("You must pre-select at least one site!")
 				} else{
 					for(i in 1:length(res)){
-						prefs[prefs$name==names(res)[i],"past"]=paste(res[[i]],collapse=";")
+						prefs[prefs$pr_name==names(res)[i],"pr_past"]=paste(res[[i]],collapse=";")
 					}
 					write.prefs(prefs)
 					

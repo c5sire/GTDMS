@@ -148,4 +148,78 @@ getSiteList = function(countries, full=TRUE){
   return(res)
 }
 
+list.master.countries <- function(){
+  getCountryList()
+}
+
+
+##########################
+
+fbCreatePrefs <- function(dbname=dbname){
+  sqlDefDict = "CREATE TABLE preferences (
+  pr_name CHAR(25) PRIMARY KEY NOT NULL,
+  pr_label_en CHAR(50),
+  pr_values TEXT,
+  pr_default TEXT,
+  pr_past TEXT
+  );"
+  
+  con = dbConnect(SQLite(), dbname)
+  dbGetQuery(con, sqlDefDict)
+  dbDisconnect(con)
+}
+
+get.prefs <- function(){
+  con = dbConnect(SQLite(),dbname)
+  sql = paste("SELECT * FROM preferences", sep="")
+  res = NULL
+  try({
+    res = dbGetQuery(con, sql)
+  })
+  dbDisconnect(con)
+  return(res)
+}
+
+write.prefs <-function(prefs){
+  con = dbConnect(SQLite(),dbname)
+  dbWriteTable(con,"preferences", prefs, overwrite=TRUE, row.names=F)
+}
+
+putPrefs <- function(prefs, vals){
+  for(i in 1:length(vals)){
+    nm = names(vals[i])
+    #print(vals[[i]])
+    if(!is.na(vals[[i]])){
+      if(length(vals[[i]])==1 ){
+        prefs[prefs$pr_name==nm,"pr_past"]=vals[[i]]	
+      } else{
+        prefs[prefs$pr_name==nm,"pr_past"]=paste(vals[[i]], collapse=";")
+      }
+    }
+  }
+  #write.table(prefs,fp, sep="\t", row.names=F)
+  write.prefs(prefs)
+  #prefs
+}
+
+
+###########################
+# update/synchronize gtdms.db : 
+# how to tackle the situation when a newer version is installed?
+# Basic solution: new version comes without a gtdms.db. If no file is found
+# a new database is created from a prefilled 'template'.
+# An existing db is initially checked (use a flag by current version) if it has all expected
+# tables and each table has all expected fields. Missing ones are added.
+#
+# This replaces partially the old necessary steps in get.prefs():
+# 1. auto merge prior prefs
+# 2. auto add crop templates: now done explicitly by new function
+# 3. auto add countries: now done explicitly by new functon
+
+
+
+
+
+
+
 

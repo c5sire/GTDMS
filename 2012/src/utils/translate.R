@@ -14,7 +14,7 @@
 ## Helper functions
 get.current.lang <-function(){
 	prefs = get.prefs()
-	lang=prefs[prefs$name=="language","past"]
+	lang=prefs[prefs$pr_name=="language","pr_past"]
 	if(length(lang)!=1) lang="en_US"
 	return(lang)
 }

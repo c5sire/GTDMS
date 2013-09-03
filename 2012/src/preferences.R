@@ -10,27 +10,27 @@
 ###############################################################################
 
 
-get.prefs <- function(){
-	#read from Pref store: soon use sqlite
-	#print("Reading prefs ...")
-	fp = file.path(getwd(),"res","prefs.txt") 
-	db = read.csv(fp, header=T, sep="\t", stringsAs=F)
-	db = auto.merge.prior.preferences(db, fp)
-	db = auto.add.crop.template(db, fp)
-	db = auto.add.countries.to.prefs(db,fp)
-	# add auto merge
-	db
-}
+# get.prefs <- function(){
+# 	#read from Pref store: soon use sqlite
+# 	#print("Reading prefs ...")
+# 	fp = file.path(getwd(),"res","prefs.txt") 
+# 	db = read.csv(fp, header=T, sep="\t", stringsAs=F)
+# # 	db = auto.merge.prior.preferences(db, fp)
+# # 	db = auto.add.crop.template(db, fp)
+# # 	db = auto.add.countries.to.prefs(db,fp)
+# 	# add auto merge
+# 	db
+# }
 
 #
 getCurrentCrop = function(){
 	db = get.prefs()
-	db[db$name=="crop","past"]
+	db[db$pr_name=="crop","pr_past"]
 }
 
 get.list.of.registered.crops = function(prefs){
 	db = prefs
-	cl = db[db$name=="crop",'values']
+	cl = db[db$pr_name=="crop",'pr_values']
 	cl = str_split(cl,";")[[1]]
 	n = length(cl)
 	re = list()
@@ -46,31 +46,34 @@ get.list.of.registered.crops = function(prefs){
 
 getCurrentFB = function(){
 	db = get.prefs()
-	db[db$name=="afieldbook","past"]
-}
-
-write.prefs <-function(prefs){
-	fp = file.path(getwd(),"res","prefs.txt")
-	write.table(prefs,fp, sep="\t", row.names=F)
+	db[db$pr_name=="afieldbook","pr_past"]
 }
 
 
-putPrefs <- function(prefs, vals){
-	fp = file.path(getwd(),"res","prefs.txt")
-	for(i in 1:length(vals)){
-		nm = names(vals[i])
-		#print(vals[[i]])
-		if(!is.na(vals[[i]])){
-		if(length(vals[[i]])==1 ){
-			prefs[prefs$name==nm,"past"]=vals[[i]]	
-		} else{
-			prefs[prefs$name==nm,"past"]=paste(vals[[i]], collapse=";")
-		}
-	    }
-	}
-	write.table(prefs,fp, sep="\t", row.names=F)
-	prefs
-}
+# write.prefs <-function(prefs){
+# 	fp = file.path(getwd(),"res","prefs.txt")
+# 	write.table(prefs,fp, sep="\t", row.names=F)
+# }
+
+
+# putPrefs <- function(prefs, vals){
+# 	fp = file.path(getwd(),"res","prefs.txt")
+# 	for(i in 1:length(vals)){
+# 		nm = names(vals[i])
+# 		#print(vals[[i]])
+# 		if(!is.na(vals[[i]])){
+# 		if(length(vals[[i]])==1 ){
+# 			prefs[prefs$name==nm,"past"]=vals[[i]]	
+# 		} else{
+# 			prefs[prefs$name==nm,"past"]=paste(vals[[i]], collapse=";")
+# 		}
+# 	    }
+# 	}
+# 	write.table(prefs,fp, sep="\t", row.names=F)
+# 	prefs
+# }
+
+
 #
 toVector = function(string){
 	res=string
@@ -85,7 +88,7 @@ toVector = function(string){
 }
 #
 aPref = function(prefs,name){
-	prefs[prefs$name==name,"past"]
+	prefs[prefs$pr_name==name,"pr_past"]
 }
 
 save.prefs <- function(out, prefs){

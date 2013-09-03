@@ -11,10 +11,10 @@
 get.last.template <-function(prefs){
 	tpl=""	
 	tpl.lst = get.templates()
-	tpl.pst = prefs[prefs$name=="logPrefix","past"]
+	tpl.pst = prefs[prefs$pr_name=="logPrefix","pr_past"]
 	if(tpl.pst %in% tpl.lst){
 		tpl= which(get.templates()==
-						prefs[prefs$name=="logPrefix","past"])
+						prefs[prefs$pr_name=="logPrefix","pr_past"])
 	} else {
 		tpl = tpl.lst[1]
 	}
@@ -23,12 +23,12 @@ get.last.template <-function(prefs){
 }
 
 extract.sites <- function(prefs) {
-	tsites= toVector(prefs[prefs$name=='tsites',"past"])
+	tsites= toVector(prefs[prefs$pr_name=='tsites',"pr_past"])
 	sts = getResourceData('sites','Sites')
 	countries = sort(unique(sts$CNTRY))
 	sites=NULL
 	for(i in 1:length(countries)){
-		locs = prefs[prefs$name==countries[i],"past"]
+		locs = prefs[prefs$pr_name==countries[i],"pr_past"]
 		locs = str_split(locs,";")[[1]]
 		#print(locs)
 		sites = c(sites, locs)
@@ -68,9 +68,9 @@ doLayoutExpLoG = function(prefs){
 											#label = prefs[prefs$name=="years","label_en"],
 											label = translate("_PLANTING_YEARS_"),
 											type = "gcombobox",
-											items = toVector(prefs[prefs$name=="years","values"]),
-											selected=which(toVector(prefs[prefs$name=="years","values"])==
-															as.integer(prefs[prefs$name=="years","past"]))
+											items = toVector(prefs[prefs$pr_name=="years","pr_values"]),
+											selected=which(toVector(prefs[prefs$pr_name=="years","pr_values"])==
+															as.integer(prefs[prefs$pr_name=="years","pr_past"]))
 											,
 											handler=check.quality
 									),
@@ -78,9 +78,9 @@ doLayoutExpLoG = function(prefs){
 											#label = prefs[prefs$name=="season","label_en"],
 											label = translate("_MONTH_"),
 											type = "gcombobox",
-											items=toVector(prefs[prefs$name=="season","values"]),
-											selected=which(toVector(prefs[prefs$name=="season","values"])==
-															prefs[prefs$name=="season","past"])
+											items=toVector(prefs[prefs$pr_name=="season","pr_values"]),
+											selected=which(toVector(prefs[prefs$pr_name=="season","pr_values"])==
+															prefs[prefs$pr_name=="season","pr_past"])
 									)
 									,
 									list(name = "sep",
@@ -114,41 +114,41 @@ doLayoutExpDsg = function(prefs, lg){
 ngeno = 30
 #print("4")
 #sdesign=toVector(prefs[prefs$name=='filDesign',"past"])
-sdesign=toVector(prefs[prefs$name=='sdesign',"values"])	
+sdesign=toVector(prefs[prefs$pr_name=='sdesign',"pr_values"])	
 #print(sdesign)
-pstart =toVector(prefs[prefs$name=='pstart',"values"])
-playout =toVector(prefs[prefs$name=='playout',"values"])
+pstart =toVector(prefs[prefs$pr_name=='pstart',"pr_values"])
+playout =toVector(prefs[prefs$pr_name=='playout',"pr_values"])
 #nreps  =toVector(prefs[prefs$name=='nreps',"values"])
-crd.nreps  =toVector(prefs[prefs$name=='crd.nreps',"values"])
-f2crd.nreps  =toVector(prefs[prefs$name=='f2crd.nreps',"values"])
-spcrd.nreps  =toVector(prefs[prefs$name=='spcrd.nreps',"values"])
-mbcrd.nreps  =toVector(prefs[prefs$name=='mbcrd.nreps',"values"])
+crd.nreps  =toVector(prefs[prefs$pr_name=='crd.nreps',"pr_values"])
+f2crd.nreps  =toVector(prefs[prefs$pr_name=='f2crd.nreps',"pr_values"])
+spcrd.nreps  =toVector(prefs[prefs$pr_name=='spcrd.nreps',"pr_values"])
+mbcrd.nreps  =toVector(prefs[prefs$pr_name=='mbcrd.nreps',"pr_values"])
 
-rcbd.nbloc  =toVector(prefs[prefs$name=='rcbd.nbloc',"values"])
-f2rcbd.nbloc  =toVector(prefs[prefs$name=='f2rcbd.nbloc',"values"])
-sprcbd.nbloc  =toVector(prefs[prefs$name=='sprcbd.nbloc',"values"])
-abd.nbloc  =toVector(prefs[prefs$name=='abd.nbloc',"values"])
-a01d.nbloc  =toVector(prefs[prefs$name=='a01d.nbloc',"values"])
+rcbd.nbloc  =toVector(prefs[prefs$pr_name=='rcbd.nbloc',"pr_values"])
+f2rcbd.nbloc  =toVector(prefs[prefs$pr_name=='f2rcbd.nbloc',"pr_values"])
+sprcbd.nbloc  =toVector(prefs[prefs$pr_name=='sprcbd.nbloc',"pr_values"])
+abd.nbloc  =toVector(prefs[prefs$pr_name=='abd.nbloc',"pr_values"])
+a01d.nbloc  =toVector(prefs[prefs$pr_name=='a01d.nbloc',"pr_values"])
 
-kbloc  =toVector(prefs[prefs$name=='kbloc',"values"])
-bsize  =toVector(prefs[prefs$name=='bsize',"values"])
+kbloc  =toVector(prefs[prefs$pr_name=='kbloc',"pr_values"])
+bsize  =toVector(prefs[prefs$pr_name=='bsize',"pr_values"])
 #factor2=toVector(prefs[prefs$name=='factor2',"values"])
-f2crd.adf.level=paste(toVector(prefs[prefs$name=='f2crd.adf.level',"past"]),collapse="\n")
-f2rcbd.adf.level=paste(toVector(prefs[prefs$name=='f2rcbd.adf.level',"past"]),collapse="\n")
-spcrd.adf.level=paste(toVector(prefs[prefs$name=='spcrd.adf.level',"past"]),collapse="\n")
-sprcbd.adf.level=paste(toVector(prefs[prefs$name=='sprcbd.adf.level',"past"]),collapse="\n")
-abd.checks = gsub(";","\n",prefs[prefs$name=='abd.checks',"past"])
-idlabel=toVector(prefs[prefs$name=='idlabel',"values"])
+f2crd.adf.level=paste(toVector(prefs[prefs$pr_name=='f2crd.adf.level',"pr_past"]),collapse="\n")
+f2rcbd.adf.level=paste(toVector(prefs[prefs$pr_name=='f2rcbd.adf.level',"pr_past"]),collapse="\n")
+spcrd.adf.level=paste(toVector(prefs[prefs$pr_name=='spcrd.adf.level',"pr_past"]),collapse="\n")
+sprcbd.adf.level=paste(toVector(prefs[prefs$pr_name=='sprcbd.adf.level',"pr_past"]),collapse="\n")
+abd.checks = gsub(";","\n",prefs[prefs$pr_name=='abd.checks',"pr_past"])
+idlabel=toVector(prefs[prefs$pr_name=='idlabel',"pr_values"])
 
-rnumber=toVector(prefs[prefs$name=='rnumber',"values"])
-rmethod=toVector(prefs[prefs$name=='rmethod',"values"])
+rnumber=toVector(prefs[prefs$pr_name=='rnumber',"pr_values"])
+rmethod=toVector(prefs[prefs$pr_name=='rmethod',"pr_values"])
 
 res = extract.sites(prefs = prefs)
 sites = res$sites
 tsites= res$tsites
 
 lmsite = 1
-xsite = which(sites==prefs[prefs$name=='msite',"past"])
+xsite = which(sites==prefs[prefs$pr_name=='msite',"pr_past"])
 if(length(xsite)>0) lmsite=xsite
 
 #print(sites)
@@ -220,7 +220,7 @@ children = list(
 								items = sdesign,
 								#handler=h.design,
 								selected = 
-										which(sdesign==prefs[prefs$name=='sdesign',"past"])
+										which(sdesign==prefs[prefs$pr_name=='sdesign',"pr_past"])
 						)
 				)
 		)
@@ -253,7 +253,7 @@ children = list(
 											 type="gcombobox",
 											 items=pstart,
 											 selected = 
-													 which(pstart==prefs[prefs$name=='pstart',"past"])
+													 which(pstart==prefs[prefs$pr_name=='pstart',"pr_past"])
 									 ),
 									 list(name="playout",
 											 #label=prefs[prefs$name=="playout","label_en"],
@@ -262,7 +262,7 @@ children = list(
 											 type="gradio",
 											 items=playout,
 											 selected = 
-													 which(playout==prefs[prefs$name=='playout',"past"])
+													 which(playout==prefs[prefs$pr_name=='playout',"pr_past"])
 									 ),
 									 
 									 list(name = "nSeeds",
@@ -270,9 +270,9 @@ children = list(
 											 label = translate("_LBL_NSEEDS_"),
 											 label.pos = "top",
 											 type = "gcombobox",
-											 items=toVector(prefs[prefs$name=="nSeeds","values"]),
-											 selected=which(toVector(prefs[prefs$name=="nSeeds","values"])==
-															 as.integer(prefs[prefs$name=="nSeeds","past"]))
+											 items=toVector(prefs[prefs$pr_name=="nSeeds","pr_values"]),
+											 selected=which(toVector(prefs[prefs$pr_name=="nSeeds","pr_values"])==
+															 as.integer(prefs[prefs$pr_name=="nSeeds","pr_past"]))
 									 )
 								)
 
@@ -287,7 +287,7 @@ children = list(
 												type="gcombobox",
 												items=crd.nreps,
 												selected = 
-														which(crd.nreps==prefs[prefs$name=='crd.nreps',"past"])
+														which(crd.nreps==prefs[prefs$pr_name=='crd.nreps',"pr_past"])
 										)
 								)
 						)
@@ -302,7 +302,7 @@ children = list(
 												type="gcombobox",
 												items=rcbd.nbloc,
 												selected = 
-														which(rcbd.nbloc==prefs[prefs$name=='rcbd.nbloc',"past"])
+														which(rcbd.nbloc==prefs[prefs$pr_name=='rcbd.nbloc',"pr_past"])
 										)
 								)
 						)
@@ -317,7 +317,7 @@ children = list(
 									type="gcombobox",
 									items=bsize,
 									selected = 
-											which(bsize==prefs[prefs$name=='bsize',"past"])
+											which(bsize==prefs[prefs$pr_name=='bsize',"pr_past"])
 							)
 							)
 						)
@@ -332,13 +332,13 @@ children = list(
 											 type="gcombobox",
 											 items=f2crd.nreps,
 											 selected = 
-													 which(f2crd.nreps==prefs[prefs$name=='f2crd.nreps',"past"])
+													 which(f2crd.nreps==prefs[prefs$pr_name=='f2crd.nreps',"pr_past"])
 									 ),
 									list(name="f2crd.adf.name",
 										type="gedit",
 										#label=prefs[prefs$name=='f2crd.adf.name',"label_en"],
 										label = translate("_LBL_F2_"),
-										text=prefs[prefs$name=='f2crd.adf.name',"past"]
+										text=prefs[prefs$pr_name=='f2crd.adf.name',"pr_past"]
 									),
 									list(name="f2crd.adf.level",
 										type="gtext",
@@ -362,13 +362,13 @@ children = list(
 												type="gcombobox",
 												items=f2rcbd.nbloc,
 												selected = 
-														which(f2rcbd.nbloc==prefs[prefs$name=='f2rcbd.nbloc',"past"])
+														which(f2rcbd.nbloc==prefs[prefs$pr_name=='f2rcbd.nbloc',"pr_past"])
 										),
 										list(name="f2rcbd.adf.name",
 												type="gedit",
 												#label=prefs[prefs$name=='f2rcbd.adf.name',"label_en"],
 												label = translate("_LBL_F2_"),
-												text=prefs[prefs$name=='f2rcbd.adf.name',"past"]
+												text=prefs[prefs$pr_name=='f2rcbd.adf.name',"pr_past"]
 										),
 										list(name="f2rcbd.adf.level",
 												type="gtext",
@@ -392,13 +392,13 @@ children = list(
 												type="gcombobox",
 												items=spcrd.nreps,
 												selected = 
-														which(spcrd.nreps==prefs[prefs$name=='spcrd.nreps',"past"])
+														which(spcrd.nreps==prefs[prefs$pr_name=='spcrd.nreps',"pr_past"])
 										),
 										list(name="spcrd.adf.name",
 												type="gedit",
 												#label=prefs[prefs$name=='spcrd.adf.name',"label_en"],
 												label = translate("_LBL_F2_"),
-												text=prefs[prefs$name=='spcrd.adf.name',"past"]
+												text=prefs[prefs$pr_name=='spcrd.adf.name',"pr_past"]
 										),
 										list(name="spcrd.adf.level",
 												type="gtext",
@@ -422,13 +422,13 @@ children = list(
 												type="gcombobox",
 												items=sprcbd.nbloc,
 												selected = 
-														which(sprcbd.nbloc==prefs[prefs$name=='sprcbd.nbloc',"past"])
+														which(sprcbd.nbloc==prefs[prefs$pr_name=='sprcbd.nbloc',"pr_past"])
 										),
 										list(name="sprcbd.adf.name",
 												type="gedit",
 												#label=prefs[prefs$name=='sprcbd.adf.name',"label_en"],
 												label = translate("_LBL_F2_"),
-												text=prefs[prefs$name=='sprcbd.adf.name',"past"]
+												text=prefs[prefs$pr_name=='sprcbd.adf.name',"pr_past"]
 										),
 										list(name="sprcbd.adf.level",
 												type="gtext",
@@ -452,7 +452,7 @@ children = list(
 												type="gcombobox",
 												items=abd.nbloc,
 												selected = 
-														which(abd.nbloc==prefs[prefs$name=='abd.nbloc',"past"])
+														which(abd.nbloc==prefs[prefs$pr_name=='abd.nbloc',"pr_past"])
 										),
 										list(name="abd.checks",
 												type="gtext",
@@ -475,7 +475,7 @@ children = list(
 												type="gcombobox",
 												items=a01d.nbloc,
 												selected = 
-														which(a01d.nbloc==prefs[prefs$name=='a01d.nbloc',"past"])
+														which(a01d.nbloc==prefs[prefs$pr_name=='a01d.nbloc',"pr_past"])
 										),
 										list(name="kbloc",
 												#label=prefs[prefs$name=="kbloc","label_en"],
@@ -483,7 +483,7 @@ children = list(
 												type="gcombobox",
 												items=kbloc,
 												selected = 
-														which(kbloc==prefs[prefs$name=='kbloc',"past"])
+														which(kbloc==prefs[prefs$pr_name=='kbloc',"pr_past"])
 										)
 								)
 						)							
@@ -497,7 +497,7 @@ children = list(
 									type="gcombobox",
 									items=mbcrd.nreps,
 									selected = 
-											which(mbcrd.nreps==prefs[prefs$name=='mbcrd.nreps',"past"])
+											which(mbcrd.nreps==prefs[prefs$pr_name=='mbcrd.nreps',"pr_past"])
 								),
 								list(name = "msite",
 									#label = prefs[prefs$name=="msite","label_en"],

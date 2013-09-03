@@ -9,14 +9,14 @@
 #
 ###############################################################################
 
-list.master.countries <- function(){
-	fp = file.path(getwd(),"res","Master-list-trial-sites.xlsx")
-	db = read.xlsx2(fp,sheetName="Sites",startRow=2)
-	unique(as.character(db$CNTR))
-}
+# list.master.countries <- function(){
+# 	fp = file.path(getwd(),"res","Master-list-trial-sites.xlsx")
+# 	db = read.xlsx2(fp,sheetName="Sites",startRow=2)
+# 	unique(as.character(db$CNTR))
+# }
 
 list.pref.countries <-function(prefs){
-	prefs$name
+	prefs$pr_name
 }
 
 list.new.countries <- function(prefs){
@@ -39,6 +39,8 @@ add.new.countries <- function(db, nc,fp){
 	
 }
 
+
+# REDO!
 auto.add.countries.to.prefs <- function(db, fp){
 	
 	nc = list.new.countries(db)
@@ -48,3 +50,4 @@ auto.add.countries.to.prefs <- function(db, fp){
 	}
 	return(db)	
 }
+

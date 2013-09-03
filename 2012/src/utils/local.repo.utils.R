@@ -15,7 +15,7 @@ get.local.db.root <- function(){
 	#db.root = "K:/packages/GDET4RT/data"  # change this from a config file in the final app
 	#scan("res/datapath.conf",character())
 	prefs = get.prefs()
-	dp = prefs[prefs$name=="dataPath","past"]
+	dp = prefs[prefs$pr_name=="dataPath","pr_past"]
 	#special case for local sample database
 	res=dp
 	if(dp=="data" | !file.exists(dp)) res=file.path(data.dir(),res)
@@ -127,7 +127,7 @@ set.fb.dir <- function(dir, w){
 	#write to prefs
 	prefs = get.prefs()
 	fp = file.path(getwd(),"res","prefs.txt")
-	prefs[prefs$name=="dataPath","past"]=dir
+	prefs[prefs$pr_name=="dataPath","pr_past"]=dir
 	write.table(prefs,fp, sep="\t", row.names=F)
 	#check that two additional directories exist
 	dir.create(file.path(dir,"accepted"), rec=T, show=F)
