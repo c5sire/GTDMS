@@ -309,7 +309,7 @@ write.fb.backup <-function(fp, db = NULL){
   sheetName = "Fieldbook"
   if(is.null(db)) db = read.xlsx(fp,sheetName=sheetName)
   sheetName="Fieldbook_backup"
-  clear.sheet(sheetName, fp)
+  #clear.sheet(sheetName, fp) # Now all derived sheets are eliminated before
   write.xlsx2(db,fp,sheetName=sheetName,append=T, row.names=F)
 }
 

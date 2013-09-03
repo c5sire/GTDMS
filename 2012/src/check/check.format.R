@@ -325,41 +325,60 @@ mark.error <-function(j, cidx, rule, rows, styles){
 	set.cell(rule, j, cidx, rows, cs  )
 }
 
+
+test.num.var.rule <- function(col, tn, lwr, upr){
+  col = col[!is.na(col)]
+  test.range = !(lwr <= col & col <= upr)
+  rule=NULL
+  if(any(test.range==TRUE)){
+    idx = which(test.range)
+    res = col[test.range] 
+    
+    rule = paste("Validated in column '",tn,"' that in row ",idx+1," the value '",res,
+                 "' is NOT between '",lwr,"' and '",upr,"'",sep="")
+    if(!is.null(rule)){
+      check.log("Fieldbook",rule,NULL)
+    }
+  }
+  rule
+}
+
+test.fac.var.rule <- function(col, tn, cds){
+  col = col[!is.na(col)]
+  test.range = !(col %in% cds)
+  rule=NULL
+  if(any(test.range==TRUE)){
+    idx = which(test.range)
+    res = col[test.range] 
+    vls = paste(cds,collapse=", ")
+    rule = paste("Validated in column '",tn,"' that in row ",idx+1," the value '",res,
+                 "' is NOT one of '",vls,"'",sep="")
+    if(!is.null(rule)){
+      check.log("Fieldbook",rule,NULL)
+    }
+  }
+  rule
+}
+
+
 check.variable <- function(col, dict, tn, rows=NULL, styles=NULL, cidx=NULL) {
 	if(has.data(col)){
 		if(is.numeric(col)){
 			lwr = as.numeric(dict[dict$ABBR==tn,"LOWER"])
 			upr = as.numeric(dict[dict$ABBR==tn,"UPPER"])
 			cds = get.codes(dict,tn)
-			if(!(is.na(lwr) & is.na(upr) & is.na(cds))){
-			#print(cds)
-			for(j in 1:length(col)){
-				if(!is.na(col[j])){
-					res = lwr<=col[j] & col[j]<=upr
-					rule = paste("Validated in column '",tn,"' that in row '",(j+1),"' the value '",col[j],
-							"' is between '",lwr,"' and '",upr,"'",sep="")
-					x=check.log("Fieldbook",rule,res)
-					#if(!res) mark.error(j, cidx, rule, rows, styles)
-					#print(cds)
-					if(!is.na(cds)){
-						res = col[j] %in% cds
-						rule = paste("Validated in column '",tn,"' that in row '",(j+1),"' the value '",col[j],
-							"' is one of '",paste(cds,collapse=", "),"'",sep="")
-						x=check.log("Fieldbook",rule,res)
-						#if(!res) mark.error(j, cidx, rule, rows, styles)
-					}
-				}
+      
+			if(!(is.na(lwr) & is.na(upr))){
+			  test.num.var.rule(col, tn, lwr, upr)
 			}
+			if(!(is.na(cds))){
+			  test.fac.var.rule(col, tn, cds)
 			}
+      
 		}
 	}
-	#rows
 }
 
-
-
-# check.variable <- function(col, dict, tn, rows, styles, cidx) {
-# }
 
 
 
