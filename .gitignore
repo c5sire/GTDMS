@@ -13,7 +13,10 @@ GTDMS.Rproj
 /2012/res/datadictionary.xls
 /2012/res/trialsites.xls
 /2012/res/_prefs.txt
-/2012/temp
+/2012/res/_Master-list-trial-sites.xlsx
+/2012/res/Master-list-trial-sites.xlsx
+/2012/temp/*.*
+/2012/temp/charts
 /2012/data
 /2012/res/temp/temp-data.csv
 man

@@ -814,3 +814,24 @@ get.short.siten <- function(out) {
 	sitea
 }
 
+is.strdate <- function(x){
+  res = NA
+  if(!is.character(x)) return(FALSE)
+  if(!str_length(x)==10) return(FALSE)
+  r = str_extract(x,"[0-9]{4}-[0-9]{2}-[0-9]{2}")
+  if(!is.na(r)){
+  try({
+    yy = as.integer(str_sub(r,1,4))
+    mm = as.integer(str_sub(r,6,7))
+    dd = as.integer(str_sub(r,9,10))
+    res = mdy.date(mm,dd,yy)
+  })  
+  }
+  if(is.na(res)) {
+    return(FALSE)
+  } else return(TRUE)
+}
+
+
+
+

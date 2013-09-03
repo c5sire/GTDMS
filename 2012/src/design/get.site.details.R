@@ -12,7 +12,8 @@
 
 
 get.site.details <- function(site){
-	sts = getResourceData('sites','Sites')
+	#sts = getResourceData('sites','Sites')
+  sts = getSites()
 	sts[sts$SHORTN==site,]
 }
 

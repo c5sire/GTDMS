@@ -130,12 +130,22 @@ getCountryList = function(){
   return(res)
 }
 
-getSiteList = function(countries, full=TRUE){
+getSites <- function(){
   con = dbConnect(SQLite(),dbname)
   sql = paste("SELECT CNTRY, SHORTN, FULLN FROM trialsites", sep="")
   res = NULL
   try({
     res = dbGetQuery(con, sql)
+  })
+  dbDisconnect(con)
+  return(res)
+  
+}
+
+getSiteList = function(countries, full=TRUE){
+res = NULL
+  try({
+    res = getSites()
     res = res[res$CNTRY %in% countries, ]
     if(full){
       res = res$FULLN
@@ -144,7 +154,6 @@ getSiteList = function(countries, full=TRUE){
     }
     res = sort(res)
   })
-  dbDisconnect(con)
   return(res)
 }
 
