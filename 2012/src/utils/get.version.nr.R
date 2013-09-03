@@ -10,5 +10,10 @@
 
 
 get.version.nr <-function(){
-	"1.1.4"
+	#"1.2.0"
+  res=Sys.getenv("DC4RT_VERSION")
+  if(str_detect(res,";")){
+    res = str_split(res,";")[[1]][2]
+  }
+  return(res)
 }

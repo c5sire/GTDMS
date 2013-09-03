@@ -832,6 +832,10 @@ is.strdate <- function(x){
   } else return(TRUE)
 }
 
+# http://stackoverflow.com/questions/8343509/better-error-message-for-stopifnot
+assert <- function (expr, error) {
+  if (! expr) stop(error, call. = FALSE)
+}
 
 
 

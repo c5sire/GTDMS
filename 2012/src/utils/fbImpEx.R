@@ -51,7 +51,7 @@ dbDisconnect(con)
 get.data.dict = function(terms="all",sheetName="any"){
   #TODO Remove calls with paramters 'terms'
   con = dbConnect(SQLite(),dbname)
-  sql = paste("SELECT * FROM datadictionary", sep="")
+  sql = "SELECT * FROM datadictionary"
   res = NULL
   try({
     res = dbGetQuery(con, sql)
@@ -132,7 +132,7 @@ getCountryList = function(){
 
 getSites <- function(){
   con = dbConnect(SQLite(),dbname)
-  sql = paste("SELECT CNTRY, SHORTN, FULLN FROM trialsites", sep="")
+  sql = "SELECT CNTRY, SHORTN, FULLN FROM trialsites"
   res = NULL
   try({
     res = dbGetQuery(con, sql)
@@ -161,6 +161,109 @@ list.master.countries <- function(){
   getCountryList()
 }
 
+add.countries <- function(fp) {
+# 1. Minimal checks on type of archive: is.excel?
+  test = logical(8)
+  test[1] = is.Excel(fp)
+  assert(test[1], paste("Adding countries: File '",fp,"' ist not an Excel file.", sep=""))
+# 2. Has the expected sheet?
+  sheetName = "Sites"
+  wb = loadWorkbook(fp)
+  sheets = getSheets(wb)
+  
+# 3a. Has expected sheet?
+  ns = names(sheets)
+  test[2] = (sheetName %in% ns)
+  assert(test[2],"Adding countries: File does not have expected sheet 'Sites'." )
+  data = read.xlsx2(fp,sheetName, stringsAsFactors = FALSE)
+  
+#  3b. Has all expected fields?
+  con = dbConnect(SQLite(), dbname)
+  fnms = names(data)
+  dnms = dbListFields(con, "trialsites")
+  dnms = dnms[-1]
+  
+  test[3] = all(dnms %in% fnms)
+  assert(test[3],"Adding countries: File does not have expected column names.")
+  
+  test[4] = !is.integer(data[,'ELEV'])
+  assert(test[4], "Adding countries: column ELEV has non integer values.")
+  test[5] = !is.numeric(data[,'LATD'])
+  assert(test[5], "Adding countries: column LATD has non numeric values.")
+  test[6] = !is.numeric(data[,'LOND'])
+  assert(test[6], "Adding countries: column LOND has non numeric values.")
+  
+  data[,"ELEV"] = as.integer(data[,'ELEV'])
+  data[,"LATD"] = as.numeric(data[,'LATD'])
+  data[,"LOND"] = as.numeric(data[,'LOND'])
+  
+# 4. Check that the new location names are not duplicated or already in the database
+  sts=getSites()
+  ddups = data$SHORTN %in% sts$SHORTN
+  ddids = paste(data$SHORTN[ddups], collapse=", ")
+  test[7] = !any(ddups) 
+  assert(test[7], paste(
+         "Adding countries: attempting to add records with SHORTN = '",ddids,"' duplicating the database.",
+         sep=""))
+  ddshn = paste(data$SHORTN[duplicated(data$SHORTN)], collapse=", ")   
+  test[8] = !any(duplicated(data$SHORTN))
+  assert(test[8], 
+         paste("Adding countries: table contains duplicated values in SHORTN: '",ddshn,"'.", 
+         sep=""))
+  
+# 5. Add countries to country table
+  if(any(test)){
+  # add ID column values
+  n = nrow(sts)
+  ID= (n+1):(n+nrow(data))
+  data = cbind(ID, data)
+  
+  
+  dbWriteTable(con,"trialsites", data, append=TRUE, row.names=F)
+  
+  
+# 6. Update preferences  
+  # Check if new countries
+  d.cntrs = getCountryList()
+  n.cntrs = unique(data$CNTRY)
+  
+  n.cntrs = n.cntrs[n.cntrs %in% d.cntrs]
+  
+  # if so, add to preference table corresponding records and list of sites in 'past'
+  if(length(n.cntrs) > 0){
+    nprefs=prefs[-c(1:nrow(prefs)),]
+    for(i in 1:length(n.cntrs)){
+      lsts = data[data$CNTRY==n.cntrs[i], "SHORTN"]
+      lsts = paste(lsts,collapse=";")
+      rec = c(n.cntrs[i], n.cntrs[i],"","", lsts)
+      rec = as.data.frame(t(rec))
+      names(rec) = names(prefs)
+      nprefs = rbind(nprefs,rec)
+    }
+    
+  }
+  dbWriteTable(con,"preferences", nprefs, append=TRUE, row.names=F)
+  dbDisconnect(con)
+  }
+}
+
+
+chooseCountries <- function(){
+  fp = choose.files(default = "", caption = "Select country file to add!",
+               filters = c("Excel","*.xls") )
+  res=try(
+    add.countries(fp), silent=TRUE
+    )
+  if(inherits(res,"try-error")){
+    ok = gmessage(res[1], "Adding countries results.", icon="error")
+  } else {
+    ok =gmessage("New trialsites added.", "Adding countries results.", icon="info")
+  }
+  
+}
+
+
+
 
 ##########################
 
@@ -180,7 +283,7 @@ fbCreatePrefs <- function(dbname=dbname){
 
 get.prefs <- function(){
   con = dbConnect(SQLite(),dbname)
-  sql = paste("SELECT * FROM preferences", sep="")
+  sql = "SELECT * FROM preferences"
   res = NULL
   try({
     res = dbGetQuery(con, sql)

@@ -93,7 +93,7 @@ m.pref.locs <-function(w){
 }
 
 m.pref.add.locs <-function(w){
-	add.localities(w)
+	chooseCountries()
 }
 
 

@@ -23,7 +23,8 @@ a_MET_ = gaction(label = 'MET (Multi-environment trial)', icon='', handler=funct
 a_PREF_GENERAL_ = gaction(label = 'General', icon='', handler=function(h,...) m.pref.general(w), parent=w) ,
 a_PREF_FB_VARS_ = gaction(label = 'Fieldbook variables', icon='', handler=function(h,...) m.pref.fb.vars(w), parent=w) ,
 sep = list(separator = TRUE) ,
-a_PREF_LOCS_ = gaction(label = 'Localities', icon='', handler=function(h,...) m.pref.locs(w), parent=w)
+a_PREF_LOCS_ = gaction(label = 'Localities', icon='', handler=function(h,...) m.pref.locs(w), parent=w) ,
+a_PREF_ADD_LOCS_ = gaction(label = 'Add Localities', icon='', handler=function(h,...) m.pref.add.locs(w), parent=w)
 ),
 'Tools' = list(
 a_TOOLS_RSSE_ = gaction(label = 'Response to selection for a single experiment', icon='', handler=function(h,...) m.tools.rsse(w), parent=w) ,

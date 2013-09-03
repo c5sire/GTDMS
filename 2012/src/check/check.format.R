@@ -344,7 +344,7 @@ test.num.var.rule <- function(col, tn, lwr, upr, rows, cidx, styles){
 #       sapply(cells[ind], setCellStyle, styles$warn)
     }
   }
-  rule
+ # rule
 }
 
 test.fac.var.rule <- function(col, tn, cds){
@@ -361,11 +361,11 @@ test.fac.var.rule <- function(col, tn, cds){
       check.log("Fieldbook",rule,NULL)
     }
   }
-  rule
+  #rule
 }
 
 test.date.var.rule <- function(col, tn){
-  col = col[!is.na(col)]
+  col = col[!is.na(col)] # Ignore missing values
   test.range = !sapply(col,is.strdate)
   rule=NULL
   if(any(test.range==TRUE)){
@@ -377,7 +377,7 @@ test.date.var.rule <- function(col, tn){
       check.log("Fieldbook",rule,NULL)
     }
   }
-  rule
+  #rule
 }
 
 
