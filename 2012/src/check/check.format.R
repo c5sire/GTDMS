@@ -326,7 +326,7 @@ mark.error <-function(j, cidx, rule, rows, styles){
 }
 
 
-test.num.var.rule <- function(col, tn, lwr, upr){
+test.num.var.rule <- function(col, tn, lwr, upr, rows, cidx, styles){
   col = col[!is.na(col)]
   test.range = !(lwr <= col & col <= upr)
   rule=NULL
@@ -338,6 +338,10 @@ test.num.var.rule <- function(col, tn, lwr, upr){
                  "' is NOT between '",lwr,"' and '",upr,"'",sep="")
     if(!is.null(rule)){
       check.log("Fieldbook",rule,NULL)
+#       cells = getCells(rows)
+#       ind = paste((idx+1),".",cidx, sep="")
+#       mapply(createCellComment, cells[ind], rule)
+#       sapply(cells[ind], setCellStyle, styles$warn)
     }
   }
   rule
@@ -369,13 +373,14 @@ check.variable <- function(col, dict, tn, rows=NULL, styles=NULL, cidx=NULL) {
 			cds = get.codes(dict,tn)
       
 			if(!(is.na(lwr) & is.na(upr))){
-			  test.num.var.rule(col, tn, lwr, upr)
+			  test.num.var.rule(col, tn, lwr, upr, rows=rows, cidx = cidx, styles = styles)
 			}
 			if(!(is.na(cds))){
 			  test.fac.var.rule(col, tn, cds)
 			}
       
 		}
+    # TODO: handle here variables of text: factors and date
 	}
 }
 

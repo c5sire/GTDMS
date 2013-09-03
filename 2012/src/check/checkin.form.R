@@ -102,7 +102,7 @@ checkin.form <- function(dirname, w){
 		if(ok){
 			#gc(F)
 			wb = loadWorkbook(to)
-			sheets = names(getSheets(wb))
+			#sheets = names(getSheets(wb))
 			
 			canBackup=NULL
 			canVars =NULL
@@ -115,8 +115,14 @@ checkin.form <- function(dirname, w){
 			ii=ii+1
 			info <- sprintf("%d%% done", round(ii/xmax*100))
 			setWinProgressBar(pb, ii, sprintf("Preparing archive (%s)", info), info)
-			canBackup = try(calc.backup(to))	
-
+			canBackup = try({
+        #calc.backup(sheets)
+        createSheet(wb,"Fieldbook_backup");
+        asheet = getSheets(wb)[["Fieldbook_backup"]]
+        fbData = read.xlsx2(to, sheetName = "Fieldbook", stringsAsFactors=FALSE)
+        addDataFrame(fbData, asheet, row.names=FALSE)
+        })	
+			sheets = names(getSheets(wb));
 			ii=ii+1
 			info <- sprintf("%d%% done", round(ii/xmax*100))
 			setWinProgressBar(pb, ii, sprintf("Calculating variables (%s)", info), info)

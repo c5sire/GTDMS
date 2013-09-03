@@ -158,10 +158,10 @@ get.sheet.data <- function(sheet, sheetName=NULL){
   return(data)
 }
 
-saveFieldbook <- function(data, wb, fp, dict){
+saveFieldbook <- function(data, wb, fp, dict, sheetName="Fieldbook"){
   fbs = getFbStyles(wb) 
   sh = getSheets(wb)
-  fb = sh[["Fieldbook"]]
+  fb = sh[[sheetName]]
   cs = getFbStylesByCol(data, dict, fbs)
   addDataFrame(data,fb, colnamesStyle=fbs$CHdr, rownamesStyle = fbs$RHdr, colStyle = cs, row.names=F)
   autoSizeColumn(fb, 1:ncol(data))

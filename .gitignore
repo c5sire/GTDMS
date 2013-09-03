@@ -15,6 +15,7 @@ GTDMS.Rproj
 /2012/res/_prefs.txt
 /2012/temp
 /2012/data
+/2012/res/temp/temp-data.csv
 man
 *.Rdata
 *.html
