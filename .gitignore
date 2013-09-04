@@ -19,6 +19,8 @@ GTDMS.Rproj
 /2012/temp/charts
 /2012/data
 /2012/res/temp/temp-data.csv
+/2012/res/trialsites_add.xls
+/2012/res/gtdms.db
 man
 *.Rdata
 *.html

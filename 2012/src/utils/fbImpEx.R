@@ -142,11 +142,12 @@ getSites <- function(){
   
 }
 
-getSiteList = function(countries, full=TRUE){
+getSiteList = function(countries, full=TRUE, mini=FALSE){
 res = NULL
   try({
     res = getSites()
     res = res[res$CNTRY %in% countries, ]
+    if(mini) return(res)
     if(full){
       res = res$FULLN
     } else {

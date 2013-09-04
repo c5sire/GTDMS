@@ -25,8 +25,12 @@ get.last.template <-function(prefs){
 extract.sites <- function(prefs) {
 	tsites= toVector(prefs[prefs$pr_name=='tsites',"pr_past"])
 	#sts = getResourceData('sites','Sites')
-  sts = getSites()
+  #sts = getSites()
+  sts = prefs[prefs$pr_name=="selCountries", "pr_past"]
+  sts = str_split(sts,";")[[1]]
+  sts = getSiteList(sts, mini=T)
 	countries = sort(unique(sts$CNTRY))
+	#countries = sort(sts)
 	sites=NULL
 	for(i in 1:length(countries)){
 		locs = prefs[prefs$pr_name==countries[i],"pr_past"]

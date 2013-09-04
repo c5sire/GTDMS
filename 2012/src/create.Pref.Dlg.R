@@ -156,8 +156,11 @@ get.tpl.txt <- function(tpl){
 getPrefLayout = function(prefs){
 	
 	cntrs  = getCountryList()
-	prefs  = check.countries(prefs, cntrs)
-	
+	#prefs  = check.countries(prefs, cntrs)
+	selCntr= prefs[prefs$pr_name=="selCountries","pr_past"]
+	scs = strsplit(selCntr,";")[[1]]
+	scs = cntrs %in% scs
+  
 	fbook  = filename(getFieldBooks(getCurrentCrop()))
 	#crops  = strsplit(prefs[prefs$name=="crop","values"],";")[[1]]
 	crops = as.character(get.list.of.registered.crops(prefs))
@@ -185,14 +188,15 @@ getPrefLayout = function(prefs){
 #	}
 	#print(prefs[,1])
 	#print(paste("CHECK",s.cnt))
-	csel=1
-	if(s.cnt!=""){
-		s.cnt= toVector(s.cnt)
-		#print(s.cnt)
-		csel=cntrs%in%s.cnt==TRUE
-		#$rint(csel)
-	}
-	
+# 	csel=1
+# 	if(s.cnt!=""){
+# 		s.cnt= toVector(s.cnt)
+# 		#print(s.cnt)
+# 		csel=cntrs%in%s.cnt==TRUE
+# 		#$rint(csel)
+# 	}
+	#print(cntrs)
+  #print(scs)
 	
 #	print(fbook)
 	#print(fsel)
@@ -226,7 +230,7 @@ getPrefLayout = function(prefs){
 							#columns = 1,
 							label = "Active countries",
 							items = cntrs,
-							checked=csel
+							checked=scs
 					)
 	)
 	)
@@ -335,6 +339,8 @@ create.Pref.Dlg = function(w){
 				#prefs[prefs$name=="filDesign","past"]=paste(out$filDesign,collapse=";")
 				if(is.na(out$afieldbook)) out$afieldbook=""
 				prefs[prefs$pr_name=="afieldbook","pr_past"]=out$afieldbook
+        #print(out)
+				prefs[prefs$pr_name=="selCountries","pr_past"]=paste(out$acountries, collapse=";")
 				write.prefs(prefs)
 				#w=refresh(w) #GTDM-310
 				refresh(w)
@@ -358,35 +364,38 @@ extract.loc <-function(out){
 	str_sub(out,(i+1),(nchar(out)-1))
 }
 
-rejoin.tpl.ctrs <- function(out){
-	cntrs = getCountryList()
-	res=list(length(cntrs))
-	locs=list()
-	for(i in 1:length(cntrs)){
-		sites = getSiteList(cntrs[i])
-		v.per.page=get.v.per.page()
-		n.pages = length(sites)/v.per.page
-		if(length(sites)%%v.per.page >0 ) n.pages=round(n.pages+0.5,0)
-		
-		res=NULL
-		for(j in 1:n.pages){
-			st = (j-1)*v.per.page+1
-			ed = (j*v.per.page)
-			if(length(sites)<ed){
-				ed=length(sites)
-			}
-			name=paste(cntrs[i],"sel",st,ed,sep="_")
-			#print(name)
-			#print(out[[name]])
-			res = c(res,out[[name]])
-		}
-		locs[[cntrs[[i]]]]=res
-	}
-	for(i in 1:length(cntrs)){
-		locs[[cntrs[i]]] = as.character(lapply(locs[[i]],extract.loc))
-	}
-	locs
-}
+# rejoin.tpl.ctrs <- function(out){
+# 	cntrs = getCountryList()
+# 	res=list(length(cntrs))
+# 	locs=list()
+# 	for(i in 1:length(cntrs)){
+# 		sites = getSiteList(cntrs[i])
+# 		v.per.page=get.v.per.page()
+# 		n.pages = length(sites)/v.per.page
+# 		if(length(sites)%%v.per.page >0 ) n.pages=round(n.pages+0.5,0)
+# 		
+# 		res=NULL
+# 		for(j in 1:n.pages){
+# 			st = (j-1)*v.per.page+1
+# 			ed = (j*v.per.page)
+# 			if(length(sites)<ed){
+# 				ed=length(sites)
+# 			}
+# 			name=paste(cntrs[i],"sel",st,ed,sep="_")
+# 			#print(name)
+# 			#print(out[[name]])
+# 			res = c(res,out[[name]])
+# 		}
+# 		locs[[cntrs[[i]]]]=res
+# 	}
+# 	for(i in 1:length(cntrs)){
+#     #print(i)
+#     #print(locs[[i]])
+# 		locs[[cntrs[i]]] = as.character(lapply(locs[[i]],extract.loc))
+# 	}
+#   #print(locs)
+# 	locs
+# }
 
 
 ##################################################
@@ -484,40 +493,27 @@ create.Var.Pref.Dlg = function(win){
 # Localities
 
 getLocPrefLayout = function(prefs){
-	cntrs = getCountryList()
+	#cntrs = getCountryList()
+  actrs = prefs[prefs$pr_name=="selCountries","pr_past"]
+  cntrs = str_split(actrs,";")[[1]]
 	clist = list(length(cntrs))
 	tplts = list(length(cntrs))
-		
-	#print(cntrs)
-	#print(clist)
-	#print(tplts)
-	nc = length(cntrs)
+
+  nc = length(cntrs)
 	for(i in 1:nc) {
 		#names(clist)[[i]]=cntrs[i]
 		tplts[[i]] = getSiteList(cntrs[i],F)
 		clist[[i]]=paste(getSiteList(cntrs[i])," (",tplts[[i]],")",sep="")
 	}
-	#print(clist)
-	#print(tplts)
-#	ptyl.vars = get.tpl.txt("PTYL")
-#	ptlb.vars = get.tpl.txt("PTLB")
 	s.tpl = list(length(cntrs))
 	for(i in 1:nc) {
 		s.tpl[[i]]  = prefs[prefs$pr_name==cntrs[i],"pr_past"]
 	
-		print(s.tpl)
 		tpls=list(length(cntrs))
-		#print(tplts)
-		#print(s.tpl)
 		if(s.tpl[i]!=""){
 			tplts[[i]]=which(tplts[[i]]%in%s.tpl[[i]]==TRUE)
-		#print(tpls)
-		#print(s.tpl)
 	}
 	}
-#	if(s.tpl[2]!=""){
-#		tpls[[2]]=which(tplts[[1]]%in%s.tpl[[2]]==TRUE)
-#	}
 	
 			assemble.country.sites <- function(cntrs,idx,clist,prefs){
 					acs = list(type="ggroup",
@@ -542,12 +538,29 @@ getLocPrefLayout = function(prefs){
 }
 
 
+rejoin.ctrs <- function(out, prefs){
+  alst = out
+  actrs = prefs[prefs$pr_name=="selCountries", "pr_past"]
+  actrs = str_split(actrs,";")[[1]]
+  res = list(length(actrs))
+  for(i in 1:length(actrs)){
+    s = unlist(alst[str_detect(names(alst),actrs[i])])
+    s = str_replace(s,"\\(CIP\\)","") # Special case!
+    s = str_extract(s,"(\\([A-Z0-9\\_\\-]{3,15}\\))") # Document for users!
+    s = paste(s, collapse=";")
+    s = str_replace_all(s,"\\(","")
+    s = str_replace_all(s,"\\)","")
+    res[[i]] = s
+  }
+  names(res) = actrs
+  res
+}
+
 create.Loc.Pref.Dlg = function(win){
 	xmin=0
 	xmax=1
 	pb <- winProgressBar("Creating Preference dialog ...", "Preparing ... %",
 			xmin, xmax, xmin)
-	
 	
 	wDlg <- xgwindow("Preferences",visible=F, parent=win)
 	prefs  = get.prefs()
@@ -569,29 +582,17 @@ create.Loc.Pref.Dlg = function(win){
 			, container=bg)
 	gbutton("ok", handler =  function(h,...) {
 				out <- svalue(wdg)
-				res <- rejoin.tpl.ctrs(out)
-				nn=0
-				for(i in 1:length(res)){
-					nn = nn + length(res[[i]]) 
-				}
-				if(nn<1){
+				res <- rejoin.ctrs(out, prefs)
+				if(length(res)<1){
 					gmessage("You must pre-select at least one site!")
 				} else{
-					for(i in 1:length(res)){
-						prefs[prefs$pr_name==names(res)[i],"pr_past"]=paste(res[[i]],collapse=";")
-					}
-					write.prefs(prefs)
+          putPrefs(prefs, res)
 					
 				}
-				#print(out)
-				#dput(out,file="bin/temp.txt")
-				#putPrefs(prefs,out)
-				#updateStatus()
 				dispose(wDlg)
 				
 			},
 			, container=bg)
-	
 	visible(wDlg)=T
 	close(pb)
 }
