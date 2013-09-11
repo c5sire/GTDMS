@@ -5,6 +5,7 @@
 *-Ex.R
 .Rproj.user
 GTDMS.Rproj
+/2012
 /2012/bin/
 /2012/src/cipnumber.txt
 /2012/res/_Data_dictionary.xls
@@ -24,3 +25,5 @@ GTDMS.Rproj
 man
 *.Rdata
 *.html
+gtdms.db
+2012/res/gtdms.db

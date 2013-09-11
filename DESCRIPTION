@@ -1,0 +1,21 @@
+Package: cloneselector
+Type: Package
+Title: Tools for managing and analyzing breeding data of clonal crops
+Version: 3.0
+Date: 2013-09-11
+Author: Reinhard Simon
+Maintainer: "Simon, Reinhard (CIP)" <R.SIMON@CGIAR.ORG>
+Description: Tools for managing and analyzing breeding data of clonal crops
+License: GPL (>=3)
+LazyData: yes
+VignetteBuilder: knitr
+Depends:
+    R (>= 2.15.1),
+    methods,
+    shiny,
+    stringr,
+    XLConnect,
+    knitr
+Collate:
+    'responseToSelection.R'
+    'fbImpEx.R'
