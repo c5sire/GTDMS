@@ -102,31 +102,14 @@ responseSelectionSeveralExpYears <-function(N, sg1, sigmaG2, sigmaE2, k, sigmaGl
 #' @return data.frame
 #' @author Raul Eyzaguirre
 #' @export
-responseSelection2stage <- function(g, 
-                                    k1, r1, sg1, 
-                                    k2, r2, sg2, 
-                                    sigmaG2, 
-                                    sigmaGL2, sigmaGY2, 
-                                    sigmaGLY2, 
-                                    sigmaE2){
-      out = paste(
-      g,
-      k1,
-      r1,
-      sg1,
-      k1,
-      r2, 
-      sg2,
-      sigmaG2,
-      sigmaGL2,
-      sigmaGY2,
-      simgaGLY2,
-      sigmaE2
-      )
-      
-  
-#out = "Invalid combination of parameters."
-try({
+responseSelection2stage <- function(             g = 100, 
+                                    k1=1, r1=1, sg1=50, 
+                                    k2=1, r2=1, sg2=10, 
+                                    sigmaG2=.1, 
+                                    sigmaGL2=.1, sigmaGY2=.1, 
+                                    sigmaGLY2=.1, 
+                                    sigmaE2=.1){
+#try({
   # first stage
   alpha1 <- sg1/g
   x1 <- qnorm(1-alpha1)
@@ -156,9 +139,9 @@ try({
   salida <- data.frame(row.names=c("1st stage =", "2nd stage ="))
   salida$x <- c(x1,x2)
   salida$Ru <- c(R1,R2)
-  out = salida
-}, silent=T)  
-out
+#  out = salida
+#}, silent=T)  
+salida
 }
 
 

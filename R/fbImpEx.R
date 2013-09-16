@@ -311,6 +311,14 @@ fbCreatePrefs <- function(dbname=dbname){
   dbDisconnect(con)
 }
 
+#' Get preferences.
+#'
+#' Get preferences table.
+#' 
+#' @author Reinhard Simon
+#' @return a data frame
+#' @export
+#'
 get.prefs <- function(){
   con = dbConnect(SQLite(),dbname)
   sql = "SELECT * FROM preferences"
