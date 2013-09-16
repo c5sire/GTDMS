@@ -109,10 +109,12 @@ responseSelection2stage <- function(             g = 100,
                                     sigmaGL2=.1, sigmaGY2=.1, 
                                     sigmaGLY2=.1, 
                                     sigmaE2=.1){
+
   salida <- data.frame(error=c("Invalid combination", "of parameters"))
   if(sg2 >= sg1) return(salida)
   if(sg1 >= g) return(salida)
   # first stage
+  
   alpha1 <- sg1/g
   x1 <- qnorm(1-alpha1)
   z1 <- dnorm(x1)
