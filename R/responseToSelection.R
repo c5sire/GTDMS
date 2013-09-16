@@ -102,32 +102,6 @@ responseSelectionSeveralExpYears <-function(N, sg1, sigmaG2, sigmaE2, k, sigmaGl
 #' @return data.frame
 #' @author Raul Eyzaguirre
 #' @export
-responseSelection2stage <- function(g, 
-                                    k1, r1, sg1, 
-                                    k2, r2, sg2, 
-                                    sigmaG2, 
-                                    sigmaGL2, sigmaGY2, 
-                                    sigmaGLY2, 
-                                    sigmaE2){
-      out = paste(
-      g,
-      k1,
-      r1,
-      sg1,
-      k1,
-      r2, 
-      sg2,
-      sigmaG2,
-      sigmaGL2,
-      sigmaGY2,
-      simgaGLY2,
-      sigmaE2
-      )
-      
-  
-#out = "Invalid combination of parameters."
-try({
-
 responseSelection2stage <- function(             g = 100, 
                                     k1=1, r1=1, sg1=50, 
                                     k2=1, r2=1, sg2=10, 
@@ -135,8 +109,8 @@ responseSelection2stage <- function(             g = 100,
                                     sigmaGL2=.1, sigmaGY2=.1, 
                                     sigmaGLY2=.1, 
                                     sigmaE2=.1){
-#try({
   # first stage
+  
   alpha1 <- sg1/g
   x1 <- qnorm(1-alpha1)
   z1 <- dnorm(x1)
@@ -149,6 +123,7 @@ responseSelection2stage <- function(             g = 100,
   # both togheter
   alpha <- alpha1*alpha2
   rho <- rho1*rho2
+  #print("check1")
   int <- function(x){
     (2*pi)^(-.5)*exp(-x^2/2) * pnorm((x1-rho*x)/(sqrt(1-rho^2)), lower.tail=FALSE)
   }
@@ -162,15 +137,11 @@ responseSelection2stage <- function(             g = 100,
   I1 <- 1 - pnorm(a)
   I2 <- 1 - pnorm(b)
   R2 <- (rho1*z1*I2 + rho2*z2*I1)/alpha
+  #print("check2")
   salida <- data.frame(row.names=c("1st stage =", "2nd stage ="))
   salida$x <- c(x1,x2)
   salida$Ru <- c(R1,R2)
-  out = salida
-}, silent=T)  
-out
-#  out = salida
-#}, silent=T)  
-salida
+return(salida)
 }
 
 

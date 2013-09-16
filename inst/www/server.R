@@ -3,28 +3,12 @@ library(cloneselector)
 
 shinyServer(function(input, output) {
   
-  data <- reactive({
-    out = sample(100,10, rep=T)
-    print(out)
-    out
-  })
-  s2sim <- reactive({
-#     print(paste(
-#     input$t2NumbGeno,
-#     input$t21NumbLoc,
-#     input$t21NumbRep,
-#     input$t21NumbSlG,
-#     input$t22NumbLoc,
-#     input$t22NumbRep,
-#     input$t22NumbSlG,
-#     input$t2GVar,
-#     input$t2GxLVar,
-#     input$t2GxY,
-#     input$t2GxLxY,
-#     input$t2Error)
-#     )
+#   data <- reactive({
+#     out = sample(100,10, rep=T)
+#     #print(out)
+#     print(out)
+#   })
           
-   x = responseSelection2stage( input$t2NumbGeno,
   s2sim <- reactive({   
     out = "Funcion failed."
     out = c(input$t2NumbGeno,
@@ -39,6 +23,8 @@ shinyServer(function(input, output) {
             input$t2GxY,
             input$t2GxLxY,
             input$t2Error)
+    #print(paste(out))
+    #print(class(out[1]))
  
     try({
     out = responseSelection2stage( input$t2NumbGeno,
@@ -84,7 +70,7 @@ shinyServer(function(input, output) {
       
   })
   
-  output$resSim <- renderText({
+  output$resSim <- renderTable({
     if(input$resSel=="sevLoc2") s2sim()
   })
   

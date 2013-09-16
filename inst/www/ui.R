@@ -115,7 +115,7 @@ tabPreferences <-function(){
 tabTools <- function(){
   basicPage(
     plotOutput("resPlot"),
-    verbatimTextOutput("resSim")
+    tableOutput("resSim")
   )
 }
 
