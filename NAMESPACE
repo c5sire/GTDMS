@@ -1,3 +1,4 @@
+export(getActiveCountries)
 export(getCountryList)
 export(initFbDb)
 export(responseSelection2stage)

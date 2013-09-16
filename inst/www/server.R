@@ -1,5 +1,6 @@
 library(cloneselector)
 
+
 shinyServer(function(input, output) {
   
   data <- reactive({
@@ -9,6 +10,21 @@ shinyServer(function(input, output) {
   })
   
   s2sim <- reactive({
+#     print(paste(
+#     input$t2NumbGeno,
+#     input$t21NumbLoc,
+#     input$t21NumbRep,
+#     input$t21NumbSlG,
+#     input$t22NumbLoc,
+#     input$t22NumbRep,
+#     input$t22NumbSlG,
+#     input$t2GVar,
+#     input$t2GxLVar,
+#     input$t2GxY,
+#     input$t2GxLxY,
+#     input$t2Error)
+#     )
+          
    x = responseSelection2stage( input$t2NumbGeno,
                                 input$t21NumbLoc,
                                 input$t21NumbRep,
@@ -21,8 +37,6 @@ shinyServer(function(input, output) {
                                 input$t2GxY,
                                 input$t2GxLxY,
                                 input$t2Error)
-   print(x)
-   x
   })
   
   output$resPlot <- renderPlot({
@@ -49,7 +63,6 @@ shinyServer(function(input, output) {
                                   input$tnumYers,
                                   input$tGxYVari,
                                   input$tGxLxYVa)
-    #if(input$resSel=="sevLocYears") s2plot()
       
   })
   

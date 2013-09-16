@@ -1,4 +1,5 @@
 library(cloneselector)
+library(shinyPlus)
 
 initFbDb()
 
@@ -80,6 +81,21 @@ mySidebarPanel <- function(){
 }
 # 
 # 
+
+fldlabel_en = fAutocomplete(list(test = "test",cream='Cream',yellow='Yellow'))
+
+mycols = list(
+  list(dataIndex='pr_name', header='Name', locked=TRUE),
+  list(dataIndex='pr_label_en', header='Label', field=fldlabel_en)#,
+#   list(dataIndex='pr_values', text='Values'),
+#   list(dataIndex='pr_default', text='Defaults'),
+#   list(dataIndex='pr_past', text='Past')
+)
+
+mydata = get.prefs()
+mydata= mydata[,-c(3:5)]
+mydata[,2] = "test"
+
 tabOverview <- function(){
   "Overview"
 }  
@@ -93,9 +109,7 @@ tabAnalysis <- function(){
 }  
            
 tabPreferences <-function(){
-  conditionalPanel(condition="input.tabsetMenu == 'preferences' & input.mprefs=='actSites'",
-     checkboxGroupInput("actCntrs", "Select countries", getCountryList() , selected = getActiveCountries() )
-  )
+    spreadsheetInput2("mydata",mydata, label="test",columns= mycols)
 }           
            
 tabTools <- function(){
@@ -109,7 +123,7 @@ tabTools <- function(){
 tabHelp <-function(){
   "Help"
 }           
-           
+
 
 shinyUI(
 pageWithSidebar(

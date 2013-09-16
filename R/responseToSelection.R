@@ -109,7 +109,23 @@ responseSelection2stage <- function(g,
                                     sigmaGL2, sigmaGY2, 
                                     sigmaGLY2, 
                                     sigmaE2){
-out = "Invalid combination of parameters."
+      out = paste(
+      g,
+      k1,
+      r1,
+      sg1,
+      k1,
+      r2, 
+      sg2,
+      sigmaG2,
+      sigmaGL2,
+      sigmaGY2,
+      simgaGLY2,
+      sigmaE2
+      )
+      
+  
+#out = "Invalid combination of parameters."
 try({
   # first stage
   alpha1 <- sg1/g
