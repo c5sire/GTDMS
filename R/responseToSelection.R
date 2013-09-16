@@ -127,6 +127,15 @@ responseSelection2stage <- function(g,
   
 #out = "Invalid combination of parameters."
 try({
+
+responseSelection2stage <- function(             g = 100, 
+                                    k1=1, r1=1, sg1=50, 
+                                    k2=1, r2=1, sg2=10, 
+                                    sigmaG2=.1, 
+                                    sigmaGL2=.1, sigmaGY2=.1, 
+                                    sigmaGLY2=.1, 
+                                    sigmaE2=.1){
+#try({
   # first stage
   alpha1 <- sg1/g
   x1 <- qnorm(1-alpha1)
@@ -159,6 +168,9 @@ try({
   out = salida
 }, silent=T)  
 out
+#  out = salida
+#}, silent=T)  
+salida
 }
 
 

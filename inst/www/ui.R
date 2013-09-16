@@ -56,23 +56,23 @@ mySidebarPanel <- function(){
      numericInput("tGxLxYVa","Genotype by location by yearvariance",.1, min=.1,max=30, step=.1)
     ),
     conditionalPanel(condition="input.tabsetMenu == 'tools' && input.resSel == 'sevLoc2'",
-     numericInput("t2NumbGeno","Number of genotypes for stage 1",3, min=3,max=100000, step=1),
+     numericInput("t2NumbGeno","Number of genotypes for stage 1",100, min=3,max=100000, step=1),
      tags$hr(),
      "1st stage",
      numericInput("t21NumbLoc","Number of locations",1, min=1,max=100, step=1),
      numericInput("t21NumbRep","Number of replications",1, min=1,max=100, step=1),
-     numericInput("t21NumbSlG","Number of selected genotypes",1, min=1,max=10000, step=1),
+     numericInput("t21NumbSlG","Number of selected genotypes",50, min=1,max=10000, step=1),
      tags$hr(),
      "2nd stage",
      numericInput("t22NumbLoc","Number of locations",1, min=1,max=100, step=1),
      numericInput("t22NumbRep","Number of replications",1, min=1,max=100, step=1),
-     numericInput("t22NumbSlG","Number of selected genotypes",1, min=1,max=10000, step=1),
+     numericInput("t22NumbSlG","Number of selected genotypes",10, min=1,max=10000, step=1),
      tags$hr(),
      "Variance components",
      numericInput("t2GVar","G",0.1, min=.1,max=30, step=.1),
      numericInput("t2GxLVar","GxL",0.1, min=.1,max=30, step=.1),
      numericInput("t2GxY","GxY",0.1, min=.1,max=30, step=.1),
-     numericInput("t2GxLxY","GxYxL",0.1, min=.1,max=30, step=.1),
+     numericInput("t2GxLxY","GxLxY",0.1, min=.1,max=30, step=.1),
      numericInput("t2Error","Error",0.1, min=.1,max=30, step=.1)
     )
     

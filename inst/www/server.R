@@ -8,7 +8,6 @@ shinyServer(function(input, output) {
     print(out)
     out
   })
-  
   s2sim <- reactive({
 #     print(paste(
 #     input$t2NumbGeno,
@@ -26,6 +25,23 @@ shinyServer(function(input, output) {
 #     )
           
    x = responseSelection2stage( input$t2NumbGeno,
+  s2sim <- reactive({   
+    out = "Funcion failed."
+    out = c(input$t2NumbGeno,
+            input$t21NumbLoc,
+            input$t21NumbRep,
+            input$t21NumbSlG,
+            input$t22NumbLoc,
+            input$t22NumbRep,
+            input$t22NumbSlG,
+            input$t2GVar,
+            input$t2GxLVar,
+            input$t2GxY,
+            input$t2GxLxY,
+            input$t2Error)
+ 
+    try({
+    out = responseSelection2stage( input$t2NumbGeno,
                                 input$t21NumbLoc,
                                 input$t21NumbRep,
                                 input$t21NumbSlG,
@@ -37,6 +53,8 @@ shinyServer(function(input, output) {
                                 input$t2GxY,
                                 input$t2GxLxY,
                                 input$t2Error)
+    })
+    out
   })
   
   output$resPlot <- renderPlot({

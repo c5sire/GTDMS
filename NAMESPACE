@@ -1,3 +1,4 @@
+export(get.prefs)
 export(getActiveCountries)
 export(getCountryList)
 export(initFbDb)
