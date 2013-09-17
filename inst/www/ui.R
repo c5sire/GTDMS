@@ -3,9 +3,11 @@ library(shinyPlus)
 
 initFbDb()
 
-
 mySidebarPanel <- function(){
+  
   sidebarPanel(
+    
+    
     conditionalPanel(condition="input.tabsetMenu == 'fieldbook'",
     fileInput('file1', 'Choose tab delimited or Excel File',
               accept=c('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -121,7 +123,8 @@ tabTools <- function(){
 
 
 tabHelp <-function(){
-  "Help"
+  #"Help"
+  tags$head(tags$link(rel='stylesheet', type='text/css', href='gtdms.css'))
 }           
 
 
@@ -149,6 +152,7 @@ pageWithSidebar(
       }, value='preferences'),
       tabPanel("Help",{
         tabHelp()
+        
       }, value = 'help')
       , 
       id = "tabsetMenu"
@@ -157,6 +161,7 @@ pageWithSidebar(
 
   )#main panel
   
-)    
+)
+
 )#shiny
 
