@@ -1,7 +1,26 @@
 library(cloneselector)
 library(shinyPlus)
-
+library(ShinyDash)
+library(leaflet)
 initFbDb()
+
+
+row <- function(...) {
+  tags$div(class="row", ...)
+}
+
+col <- function(width, ...) {
+  tags$div(class=paste0("span", width), ...)
+}
+
+actionLink <- function(inputId, ...) {
+  tags$a(href='javascript:void',
+         id=inputId,
+         class='action-button',
+         ...)
+}
+
+
 
 mySidebarPanel <- function(){
   
@@ -44,6 +63,7 @@ mySidebarPanel <- function(){
     ),
     conditionalPanel(condition="input.tabsetMenu == 'tools' && (input.resSel == 'oneLoc' | input.resSel == 'sevLoc' | input.resSel == 'sevLocYears')",
       numericInput("tplotCap","Plot capacity",200, min=100,max=10000, step=1),
+      #selectInput("tplotCap","Plot capacity",c(100:10000), 200),
       numericInput("tnumSelG","Number of selected genotypes",11, min=1,max=1000, step=1),
       numericInput("tgenoVar","Genotypic variance",0.1, min=0.1,max=30, step=.1),                     
       numericInput("terroVar","Error variance",0.1, min=0.1,max=30, step=.1)
@@ -98,8 +118,94 @@ mydata = get.prefs()
 mydata= mydata[,-c(3:5)]
 mydata[,2] = "test"
 
+sites = getSitesFull()
+minLat= round(min(sites$LATD)-2,0)
+maxLat= round(max(sites$LATD)+2,0)
+minLon= round(min(sites$LOND)-2,0)
+maxLon= round(max(sites$LOND)+2,0)
+latCen = minLat+(maxLat-minLat)/2
+lonCen = minLon+(maxLon-minLon)/2
+print(paste(minLat, minLon, maxLat, maxLon, latCen, lonCen))
+
 tabOverview <- function(){
-  "Overview"
+  bootstrapPage(
+  leafletMap(
+    "map", "100%", 300,
+    initialTileLayer = "http://{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
+    initialTileLayerAttribution = HTML('Maps by somewhere')
+    ,
+    options=list(
+      #center = c(latCen, lonCen),
+      center = c(0,0),
+      zoom = 1,
+      maxBounds = list(list(-80, -165), list(90, 160))
+      #maxBounds = list(list(minLat, minLon), list(maxLat, maxLon))
+    )
+  )
+#   ,
+#   
+#   tags$div(
+#     class = "container",
+#     
+#     tags$p(tags$br()),
+#     row(
+#       col(4, tags$br()),
+#       col(4, h2('Population of U.S. Cities'))
+#     ),
+#     row(
+#       col(
+#         4,
+#         actionLink('randomLocation', 'Go to random location'),
+#         checkboxInput('addMarkerOnClick', 'Add marker on click', FALSE)
+#       ),
+#       col(
+#         4,
+#         htmlWidgetOutput(
+#           outputId = 'desc',
+#           HTML(paste(
+#             'The map is centered at <span id="lat"></span>, <span id="lng"></span>',
+#             'with a zoom level of <span id="zoom"></span>.<br/>',
+#             'Top <span id="shownCities"></span> out of <span id="totalCities"></span> visible cities are displayed.'
+#           ))
+#         )
+#       )
+#     )
+# #     ,
+# #     tags$hr(),
+# #     row(
+# #       col(
+# #         10,
+# #         selectInput('year', 'Year', c(2000:2010), 2010),
+# #         selectInput('maxCities', 'Maximum cities to display', choices=c(
+# #           5, 25, 50, 100, 200, 500, 2000, 5000, 10000, All = 100000
+# #         ), selected = 100)
+# #       ),
+# #       col(
+# #         10,
+# #         conditionalPanel(
+# #           condition = 'output.data',
+# #           h4('Visible cities')
+# #         ),
+# #         tableOutput('data')
+# #       ),
+# #       col(
+# #         10,
+# #         conditionalPanel(
+# #           condition = 'output.cityTimeSeries && output.cityTimeSeries.src',
+# #           h4(id='cityTimeSeriesLabel', class='shiny-text-output'),
+# #           plotOutput('cityTimeSeries', width='100%', height='200px')
+# #         ),
+# #         conditionalPanel(
+# #           condition = 'output.markers',
+# #           h4('Marker locations'),
+# #           actionLink('clearMarkers', 'Clear markers')
+# #         ),
+# #         tableOutput('markers')
+# #       )
+# #     )
+#   )
+#   
+   )
 }  
 
 tabFieldbook <- function(){

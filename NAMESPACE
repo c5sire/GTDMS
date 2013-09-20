@@ -1,6 +1,8 @@
 export(get.prefs)
 export(getActiveCountries)
 export(getCountryList)
+export(getSiteList)
+export(getSitesFull)
 export(initFbDb)
 export(responseSelection2stage)
 export(responseSelectionSeveralExp)

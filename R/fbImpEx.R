@@ -143,6 +143,25 @@ fbCreateTrialSites <- function(dbname=dbname){
 
 #' Retrieve registered countries from local database
 #' 
+#' @return data.frame of trial sites
+#' @author Reinhard Simon
+#' @export
+#' 
+getSitesFull = function(){
+  con = dbConnect(SQLite(),dbname)
+  sql = paste("SELECT * FROM trialsites", sep="")
+  res = NULL
+  try({
+    res = dbGetQuery(con, sql)
+  })
+  dbDisconnect(con)
+  return(res)
+}
+
+
+
+#' Retrieve registered countries from local database
+#' 
 #' @return character vector of country names
 #' @author Reinhard Simon
 #' @export
@@ -171,6 +190,13 @@ getSites <- function(){
   
 }
 
+#'Get a list with full or abrreviated names
+#'
+#'@param countries vecotr of country names
+#'@param full get full names or abbreviated ones
+#'@param mini get the whole table
+#'@author Reinhard Simon
+#'@export
 getSiteList = function(countries, full=TRUE, mini=FALSE){
 res = NULL
   try({
@@ -312,6 +338,17 @@ fbCreatePrefs <- function(dbname=dbname){
 }
 
 
+#' Get database connection
+#'
+#' @author Reinhard Simon
+#' @return a connection to local database
+#' @export
+#'
+gtdmsConnect <- function(){
+  dbConnect(SQLite(),dbname)
+}
+
+
 #' Get preferences.
 #'
 #' Get preferences table.
@@ -321,7 +358,7 @@ fbCreatePrefs <- function(dbname=dbname){
 #' @export
 #'
 get.prefs <- function(){
-  con = dbConnect(SQLite(),dbname)
+  con = gtdmsConnect()
   sql = "SELECT * FROM preferences"
   res = NULL
   try({

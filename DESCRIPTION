@@ -14,6 +14,7 @@ Depends:
     methods,
     shiny,
     stringr,
+    RSQLite,
     XLConnect,
     knitr
 Collate:
