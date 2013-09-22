@@ -326,6 +326,26 @@ fbCreateCropManagement <- function(con){
   dbGetQuery(con, s)
 }
 
+fbCreateVarList <- function(con){
+  nm="varlist"
+  s = paste("CREATE TABLE",nm,"(
+  fbID INT PRIMARY KEY NOT NULL,
+  fbName CHAR(25),
+  FACVAR TEXT,
+  FACABBR TEXT,
+  FIELDBOOKX TEXT,
+  SUMMARIZEX TEXT,
+  ANALYZEX TEXT,
+  SELDIR TEXT,
+  SELWEIGHT TEXT
+);")
+  if(dbExistsTable(con, nm)){
+    dbRemoveTable(con,nm)
+  }
+  dbGetQuery(con, s)
+  
+}
+
 fbCreateMaterialGroup <- function(con){
   nm="materialgroup"
   s = paste("CREATE TABLE",nm,"(
@@ -374,6 +394,7 @@ fbCreateFieldbookTables <- function(dbname=dbname){
   fbCreateHoboData(con)
   fbCreateWeatherData(con)
   fbCreateCropManagement(con)
+  fbCreateVarList(con)
   
   fbCreateMaterialGroup(con)
   fbCreateTemplateList(con)
@@ -381,16 +402,68 @@ fbCreateFieldbookTables <- function(dbname=dbname){
 }
 
 
-fbLoad <- function(filepath){
+fbLoad <- function(filepath, update=FALSE){
+  stopifnot(file.exists(filepath))
   # get list of sheets
+  wb = loadWorkbook(filepath)
+  sheets = getSheets(wb)
   # compare against list of known sheets
-  # allow old inconsistent names
+  knownSheets = c("Minimal", "Installation", "Fieldbook", 
+                  "MaterialList", "VarList", "HoboData",
+                  "WeatherData", "SoilAnalysis","CropManagement")
+  database = list()
+  shVerify = knownSheets[knownSheets %in% sheets]
   # construct list of dataframes
+  for(i in 1:length(shVerify)){
+    database[[shVerify[i]]] = readWorksheet(wb,shVerify[i])
+  }
+  
+  # allow old inconsistent names
+  oldNames = list(MaterialList = "Material List",
+                  SoilAnalysis = "Soil_analysis",
+                  HoboData     = "Hobo_data", 
+                  WeatherData  = "Weather_data",
+                  CropManagement= "Crop_management", 
+                  VarList      = "Var List")
+  
+  x = oldNames %in% sheets
+  x = oldNames[!is.na(x)]
+  # construct list of dataframes
+  for(i in 1:length(x)){
+    database[[names(x)[i]]] = readWorksheet(wb,x[[i]])
+  }
+  
   # return standardized list of known dataframes
+  return(database)
 }
 
 
-#fbCreateFieldbookTables()
+fbPut <- function(fielddata){
+  #Save each sheet individually
+  #Put away the fieldbook
+  
+  
+  # connect to db
+  con = gtdmsConnect()
+  # get list of colnames / reuse to add to 'minimal' table
+  nms = names(fielddata$fieldbook)
+  fb = fielddata$fieldbook
+  fbn=fielddata$Minimal[1,2]
+  # cycle through records
+  n = nrow(fb)  
+  for(i in 1:n){
+    # get unique record id = fieldbook ID
+    guid = paste(fbn,fb$PLOT[i],sep="_")
+    # check if present
+    # if so: UPDATE else INSERT
+    # create SQL statement for UPDATE or INSERT
+    # execute SQL statement
+    
+  }
+  
+  
+  # Put away minimal ...
+}
 
 # Test loading fieldbook
 
