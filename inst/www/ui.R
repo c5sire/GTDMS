@@ -5,6 +5,43 @@ library(leaflet)
 initFbDb()
 
 
+
+fldlabel_en = fAutocomplete(list(test = "test",cream='Cream',yellow='Yellow'))
+
+mycols = list(
+  list(dataIndex='pr_name', header='Name', locked=TRUE),
+  list(dataIndex='pr_label_en', header='Label', field=fldlabel_en)#,
+  #   list(dataIndex='pr_values', text='Values'),
+  #   list(dataIndex='pr_default', text='Defaults'),
+  #   list(dataIndex='pr_past', text='Past')
+)
+
+mydata = get.prefs()
+mydata= mydata[,-c(3:5)]
+mydata[,2] = "test"
+
+sites = getSitesFull()
+
+
+overviewCols = list(
+  list(dataIndex='CROP', header='Crop', locked=TRUE),
+  list(dataIndex='TRIALTYPE', header='Trial type', locked=TRUE),
+  list(dataIndex='BEGINDATE', header='Begin date', locked=TRUE),
+  list(dataIndex='ENDATE', header='End date', locked=TRUE),
+  list(dataIndex='LEADER', header='Leader', locked=TRUE),
+  list(dataIndex='COLLABORATORS', header='Collaborators', locked=TRUE),
+  list(dataIndex='SITESHORT', header='Site short', locked=TRUE),
+  list(dataIndex='COUNTRY', header='Country', locked=TRUE),
+  list(dataIndex='ELEVATION', header='Elevation', locked=TRUE),
+  list(dataIndex='PROJECTNAME', header='Project name', locked=TRUE),
+  list(dataIndex='PROJECTEND', header='Project end', locked=TRUE)
+)
+
+overviewData = fbGetMinimalOverview()
+#print(overviewData)
+
+
+
 row <- function(...) {
   tags$div(class="row", ...)
 }
@@ -103,32 +140,16 @@ mySidebarPanel <- function(){
 }
 # 
 # 
-
-fldlabel_en = fAutocomplete(list(test = "test",cream='Cream',yellow='Yellow'))
-
-mycols = list(
-  list(dataIndex='pr_name', header='Name', locked=TRUE),
-  list(dataIndex='pr_label_en', header='Label', field=fldlabel_en)#,
-#   list(dataIndex='pr_values', text='Values'),
-#   list(dataIndex='pr_default', text='Defaults'),
-#   list(dataIndex='pr_past', text='Past')
-)
-
-mydata = get.prefs()
-mydata= mydata[,-c(3:5)]
-mydata[,2] = "test"
-
-sites = getSitesFull()
-minLat= round(min(sites$LATD)-2,0)
-maxLat= round(max(sites$LATD)+2,0)
-minLon= round(min(sites$LOND)-2,0)
-maxLon= round(max(sites$LOND)+2,0)
-latCen = minLat+(maxLat-minLat)/2
-lonCen = minLon+(maxLon-minLon)/2
-print(paste(minLat, minLon, maxLat, maxLon, latCen, lonCen))
+# minLat= round(min(sites$LATD)-2,0)
+# maxLat= round(max(sites$LATD)+2,0)
+# minLon= round(min(sites$LOND)-2,0)
+# maxLon= round(max(sites$LOND)+2,0)
+# latCen = minLat+(maxLat-minLat)/2
+# lonCen = minLon+(maxLon-minLon)/2
+# print(paste(minLat, minLon, maxLat, maxLon, latCen, lonCen))
 
 tabOverview <- function(){
-  bootstrapPage(
+ bootstrapPage(
   leafletMap(
     "map", "100%", 300,
     initialTileLayer = "http://{s}.tiles.mapbox.com/v3/jcheng.map-5ebohr46/{z}/{x}/{y}.png",
@@ -141,9 +162,11 @@ tabOverview <- function(){
       maxBounds = list(list(-80, -165), list(90, 160))
       #maxBounds = list(list(minLat, minLon), list(maxLat, maxLon))
     )
-  )
-#   ,
-#   
+   ),
+  spreadsheetInput2("overviewdata",overviewData[,1:2], columns= overviewCols[1:2])
+  #spreadsheetInput2("overviewdata",mydata, columns= mycols)
+#  ,
+  
 #   tags$div(
 #     class = "container",
 #     
@@ -170,42 +193,42 @@ tabOverview <- function(){
 #         )
 #       )
 #     )
-# #     ,
-# #     tags$hr(),
-# #     row(
-# #       col(
-# #         10,
-# #         selectInput('year', 'Year', c(2000:2010), 2010),
-# #         selectInput('maxCities', 'Maximum cities to display', choices=c(
-# #           5, 25, 50, 100, 200, 500, 2000, 5000, 10000, All = 100000
-# #         ), selected = 100)
-# #       ),
-# #       col(
-# #         10,
-# #         conditionalPanel(
-# #           condition = 'output.data',
-# #           h4('Visible cities')
-# #         ),
-# #         tableOutput('data')
-# #       ),
-# #       col(
-# #         10,
-# #         conditionalPanel(
-# #           condition = 'output.cityTimeSeries && output.cityTimeSeries.src',
-# #           h4(id='cityTimeSeriesLabel', class='shiny-text-output'),
-# #           plotOutput('cityTimeSeries', width='100%', height='200px')
-# #         ),
-# #         conditionalPanel(
-# #           condition = 'output.markers',
-# #           h4('Marker locations'),
-# #           actionLink('clearMarkers', 'Clear markers')
-# #         ),
-# #         tableOutput('markers')
-# #       )
-# #     )
-#   )
-#   
-   )
+#     ,
+#     tags$hr(),
+#     row(
+#       col(
+#         10,
+#         selectInput('year', 'Year', c(2000:2010), 2010),
+#         selectInput('maxCities', 'Maximum cities to display', choices=c(
+#           5, 25, 50, 100, 200, 500, 2000, 5000, 10000, All = 100000
+#         ), selected = 100)
+#       ),
+#       col(
+#         10,
+#         conditionalPanel(
+#           condition = 'output.data',
+#           h4('Visible cities')
+#         ),
+#         tableOutput('data')
+#       ),
+#       col(
+#         10,
+#         conditionalPanel(
+#           condition = 'output.cityTimeSeries && output.cityTimeSeries.src',
+#           h4(id='cityTimeSeriesLabel', class='shiny-text-output'),
+#           plotOutput('cityTimeSeries', width='100%', height='200px')
+#         ),
+#         conditionalPanel(
+#           condition = 'output.markers',
+#           h4('Marker locations'),
+#           actionLink('clearMarkers', 'Clear markers')
+#         ),
+#         tableOutput('markers')
+#       )
+#     )
+#  )
+  
+  )
 }  
 
 tabFieldbook <- function(){
@@ -217,7 +240,8 @@ tabAnalysis <- function(){
 }  
            
 tabPreferences <-function(){
-    spreadsheetInput2("mydata",mydata, label="test",columns= mycols)
+  
+  'Prefs'
 }           
            
 tabTools <- function(){
@@ -243,6 +267,7 @@ pageWithSidebar(
     tabsetPanel( 
       tabPanel("Overview",{
         tabOverview()
+        #'Overview'
       }, value='overview') , 
       tabPanel("Fieldbook",{
         "y"
@@ -255,6 +280,7 @@ pageWithSidebar(
       }, value='tools'),
       tabPanel("Preferences",{
         tabPreferences()  
+        #'prefs'
       }, value='preferences'),
       tabPanel("Help",{
         tabHelp()

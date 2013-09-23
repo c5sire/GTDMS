@@ -20,3 +20,4 @@ Depends:
 Collate:
     'responseToSelection.R'
     'fbImpEx.R'
+    'fieldbook.R'

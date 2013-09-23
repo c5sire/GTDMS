@@ -32,8 +32,9 @@ fbFormatFbVar <- function(tbl, i){
 }
 
 fbCreateFieldbook <- function(con, tbl){
+  nm = "fieldbooks"
   n = nrow(tbl)
-  s = "CREATE TABLE fieldbooks (
+  s = paste("CREATE TABLE ",nm," (
   fbID INT PRIMARY KEY NOT NULL,
   fbName CHAR(25),
   PLOT INT,
@@ -41,7 +42,7 @@ fbCreateFieldbook <- function(con, tbl){
   SBLOCK INT,
   REP INT(1),
   GENOTYPEID CHAR(50),
-  FACTOR2 CHAR(50),"
+  FACTOR2 CHAR(50),",sep="")
   
   for(i in 1:n){
     s = paste(s,fbFormatFbVar(tbl, i))
@@ -51,8 +52,9 @@ fbCreateFieldbook <- function(con, tbl){
       s = paste(s,");", sep="")
     }
   }
-  #con = gtdmsConnect()
-  dbGetQuery(con,"DROP TABLE fieldbooks")
+  if(dbExistsTable(con, nm)){
+    dbRemoveTable(con,nm)
+  }
   dbGetQuery(con, s)
 }
 
@@ -435,6 +437,20 @@ fbLoad <- function(filepath, update=FALSE){
   
   # return standardized list of known dataframes
   return(database)
+}
+
+#' Get a short summary for display in an overview
+#' 
+#' @return data.frame yellow list of field trials
+#' @author Reinhard Simon
+#' @export
+#' 
+fbGetMinimalOverview <- function(){
+  con = gtdmsConnect()
+  out = dbGetQuery(con, "SELECT CROP, TRIALTYPE, BEGINDATE, ENDDATE, LEADER, COLLABORATORS, 
+                     SITESHORT, COUNTRY, ELEVATION, PROJECTNAME, PROJECTEND FROM minimal")
+  dbDisconnect(con)
+  return(out)
 }
 
 

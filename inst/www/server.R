@@ -19,11 +19,11 @@ bindEvent <- function(eventExpr, callback, env=parent.frame(), quoted=FALSE) {
 
 shinyServer(function(input, output, session) {
   
-#   data <- reactive({
-#     out = sample(100,10, rep=T)
-#     #print(out)
-#     print(out)
-#   })
+  data <- reactive({
+    out = sample(100,10, rep=T)
+    #print(out)
+    print(out)
+  })
   values <- reactiveValues(markers = NULL)
   map <- createLeafletMap(session, 'map')
   
@@ -135,22 +135,7 @@ shinyServer(function(input, output, session) {
   
           
   s2sim <- reactive({   
-    out = "Funcion failed."
-    out = c(input$t2NumbGeno,
-            input$t21NumbLoc,
-            input$t21NumbRep,
-            input$t21NumbSlG,
-            input$t22NumbLoc,
-            input$t22NumbRep,
-            input$t22NumbSlG,
-            input$t2GVar,
-            input$t2GxLVar,
-            input$t2GxY,
-            input$t2GxLxY,
-            input$t2Error)
-    #print(paste(out))
-    #print(class(out[1]))
- 
+    out = as.data.frame(c("Invalid combination of parameters"))
     try({
     out = responseSelection2stage( input$t2NumbGeno,
                                 input$t21NumbLoc,
@@ -199,7 +184,11 @@ shinyServer(function(input, output, session) {
     if(input$resSel=="sevLoc2") s2sim()
   })
   
-  output$out <- renderText({
-    data()
-  })
+#   output$resPlot <- renderPlot({
+#     s2sim()
+#   })
+  
+#   output$out <- renderText({
+#     #data()
+#   })
 })
